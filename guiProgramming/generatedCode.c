@@ -3,32 +3,29 @@
 
 /* initialisation of variables according to pin configuration*/
 
-int led1 = D1;
+int led = 13;
 
-/* setup() function initialising the pin configuration*/
+/* setup() function initialising the pin configuration */
 
-void setup(){
-	pinMode(led1,OUTPUT);
+void setup() {
+	pinMode(led,OUTPUT);
 }
 
 /* Switch case implementing the different states*/
 
-typedef enum{
+typedef enum {
 	led_on,
-	led_off,
-states;
+} states;
 
-states s = led_off;
+states s = led_on;
 
 /* The loop function runs over and over again forever */
-void loop(){
+void loop() {
 	switch(s){
 		case led_on:
-			digitalWrite(led1,HIGH);
-			s = led_off;
-		case led_off:
-			digitalWrite(led1,LOW);
-			s = led_on;
+			digitalWrite(led,HIGH);
+			break;
 		default:
 			printf("Default case not admissible");
+	}
 }
