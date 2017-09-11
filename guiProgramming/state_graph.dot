@@ -1,0 +1,8 @@
+digraph finite_state_machine {
+	rankdir=LR;
+	size="8,5"
+	node [shape = circle fontsize=10 fixedsize=TRUE];
+	init->led_on;
+	led_on->led_off;
+	led_off->led_on;
+}

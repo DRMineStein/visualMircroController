@@ -1,0 +1,5 @@
+digraph s2_flow {
+	size="8,5"
+	node [shape = "box"];
+	s2_Digitalwrite->exit;
+}
