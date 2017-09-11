@@ -44,30 +44,13 @@ def buttonScroll(frameScroll, title, row, col, l, cmd, frameMaster, view_list, d
     listBoardLabel = Label(frameScroll, text=title, bg="grey").grid(row=row, column=col, sticky=E+W)
     gridPos = 1
     btn_list = []
-    #for b in range(len(l)):
+
     for b in l:
-        # if isinstance(cmd, list):
-        #     fun = cmd[b]
-        # print cmd
-        # print isinstance(cmd, dict)
-        if isinstance(cmd, dict):
-            fun = cmd[b]
-            # print fun
-            if fun is arduino.digitalWrite:
-                # print "STESSA FUNZIONE"
-                btn = Button(frameScroll, height=1, width=35, relief=FLAT, bg="gray", fg="gray", text=b,
-                             command=lambda f=frameScroll, t=b, fm=frameMaster, v=view_list, dP=dataPin, dS=dataStates,
-                                            dF=dataFlow:
-                             arduino.digitalWrite(f, t, fm, v, dP, dS, dF))
-        else:
-            fun = cmd
-            # print fun
-            btn = Button(frameScroll, height=1, width=35, relief=FLAT, bg="gray", fg="gray", text=b,
-                         command=lambda f=frameScroll, t=b, fm=frameMaster, v=view_list, dP=dataPin, dS=dataStates,
+        btn = Button(frameScroll, height=1, width=35, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text=b,
+                         command=lambda command=cmd, f=frameScroll, t=b, fm=frameMaster, v=view_list, dP=dataPin, dS=dataStates,
                                         dF=dataFlow:
-                         fun(f, t, fm, v, dP, dS, dF))
-        # print "Digital Write:"
-        # print arduino.digitalWrite
+                         command(f, t, fm, v, dP, dS, dF))
+
         btn.grid(row=gridPos, column=0, sticky=E+W)
         btn_list.append(btn)
         gridPos += 1

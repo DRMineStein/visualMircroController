@@ -5,8 +5,8 @@ def digitalWrite(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     self.top.title(title)
     self.top.config(bg="gray")
 
-    descriptionLable = Label(self.top, text="Set options for the selected operation", bg="gray")
-    descriptionLable.grid(row=0, sticky=W)
+    descriptionLabel = Label(self.top, text="Set options for the write operation", bg="gray")
+    descriptionLabel.grid(row=0, sticky=W)
 
     label1 = Label(self.top, text="State name:", bg="gray")
     label1.grid(row=1, column=0, sticky=W)
@@ -25,65 +25,90 @@ def digitalWrite(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     c.var = var
     c.grid(row=2, column=2, sticky=W)
 
-    stausString = StringVar()
-    statusLable = Label(self.top, textvariable=stausString, bg="gray")
-    statusLable.txtvar = stausString
-    statusLable.grid(row=3, sticky=W)
+    status = StringVar()
+    statusLabel = Label(self.top, textvariable=status, bg="gray")
+    statusLabel.txtvar = status
+    statusLabel.grid(row=3, sticky=W)
 
     button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", text="Save pin",
-                     command=lambda t=title, state=e1, var=e2, check=c, l=statusLable, fm=frameMaster,
+                     command=lambda t=title, state=e1, var=e2, check=c, l=statusLabel, fm=frameMaster,
                                     dP=dataPin, dS=dataStates, dF=dataFlow:
                      addDigitalWrite(t, state, var, check, l, fm, dP, dS, dF))
     button1.grid(row=2, column=3)
 
-
 def addDigitalWrite(title, state, variable, check, status_label, frameMaster, dataPin, dataStates, dataFlow):
-    setOperation = True
-    print "Variable"
-    print variable.get()
-    print "State"
-    print state.get()
-    print dataStates
     for key in dataStates.keys():
         if state.get() != key:
-            setOperation = False
             status_label.txtvar.set("State not found.")
-            # state.delete(0, END)
+            return
         else:
-            setOperation = True
             break
 
     for key in dataPin.keys():
         if variable.get() != dataPin[key][0]:
-            setOperation = False
             status_label.txtvar.set("Variable name not found.")
-            # variable.delete(0, END)
+            return
         else:
-            setOperation = True
             break
 
-    if setOperation:
-        logicalState = None
-        if int(check.var.get()) > 0:
-            logicalState = "HIGH"
-        else:
-            logicalState = "LOW"
-        code =  "digitalWrite(" + variable.get() + "," + logicalState + ");\n"
-        dataFlow[state.get()] = (code, state.get()+"_"+title.replace(' ',""), 'exit')
-        status_label.txtvar.set(title + " operation added.")
-
-    print dataFlow
+    logicalState = None
+    if int(check.var.get()) > 0:
+        logicalState = "HIGH"
+    else:
+        logicalState = "LOW"
+    code =  "digitalWrite(" + variable.get() + "," + logicalState + ");\n"
+    dataFlow[state.get()] = (code, state.get()+"_"+title.replace(' ',""), 'exit')
+    status_label.txtvar.set(title + " operation added.")
 
 def digitalRead(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     pass
 
 
 def wait(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
-    pass
+    self.top = Toplevel()
+    self.top.title(title)
+    self.top.config(bg="gray")
 
+    descriptionLabel = Label(self.top, text="Set options for the write operation", bg="gray")
+    descriptionLabel.grid(row=0, sticky=W)
+
+    label1 = Label(self.top, text="State name:", bg="gray")
+    label1.grid(row=1, column=0, sticky=W)
+
+    label2 = Label(self.top, text="Timeout:", bg="gray")
+    label2.grid(row=2, column=0, sticky=W)
+
+    e1 = Entry(self.top)
+    e2 = Entry(self.top)
+
+    e1.grid(row=1, column=1)
+    e2.grid(row=2, column=1)
+
+    status = StringVar()
+    statusLabel = Label(self.top, textvariable=status, bg="gray")
+    statusLabel.txtvar = status
+    statusLabel.grid(row=3, sticky=W)
+
+    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", text="Save pin",
+                     command=lambda t=title, state=e1, timeout=e2, l=statusLabel, fm=frameMaster,
+                                    dP=dataPin, dS=dataStates, dF=dataFlow:
+                     addWait(t, state, timeout, l, fm, dP, dS, dF))
+    button1.grid(row=2, column=3)
+
+def addWait(title, state, timeout, status_label, frameMaster, dataPin, dataStates, dataFlow):
+    if state.get() in dataStates:
+        try:
+            delay = int(timeout.get())    
+            code =  "delay(" + str(delay) + ");\n"
+            dataFlow[state.get()] = (code, state.get()+"_"+title.replace(' ',""), 'exit')
+            status_label.txtvar.set(title + " operation added.")
+        except ValueError:
+            status_label.txtvar.set("Invalid delay format.")
+    else:
+        status_label.txtvar.set("State not found.") 
 
 opList = ["Digital write", "Digital read", "Wait"]
 
-opFunc = {"Digital write": digitalWrite, "Digital read": digitalRead, "Wait":wait}
+opFunc = {"Digital write": digitalWrite, "Digital read": digitalRead, "Wait": wait}
 
 portList = ["D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9" ,"D10" ,"D11" ,"D12", "D13"]
