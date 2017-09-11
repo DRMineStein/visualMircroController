@@ -51,10 +51,10 @@ def initVariable(dataPin, dataStates, dataFlow):
 def genLoop(dataPin, dataStates, dataFlow):
     code = "\n/* Switch case implementing the different states*/\n\n"
 
-    code += "typedef enum{\n"
+    code += "typedef enum {\n"
     for s in list(dataStates.keys()):
         code += "\t"+s+",\n"
-    code += "states;\n\n"
+    code += "} states;\n\n"
     initial_state = ""
     for s in list(dataStates.keys()):
         if "init" in dataStates[s][0]:
@@ -76,13 +76,16 @@ def genLoop(dataPin, dataStates, dataFlow):
         if len(dataStates[s][1])==1:
             code += "\t"*indent + "s = "+ dataStates[s][1].pop() + ";\n"
 
+        code += "\t"*indent + "break;\n"
+
         indent -= 1
 
     code += "\t"*indent +"default:\n"
     indent += 1
     code += "\t"*indent +"printf(\"Default case not admissible\");\n"
-    indent -= 1
-    indent -= 1
+    indent -= 2
+    code += "\t"*indent +"}\n"
+
     code += "}"
 
     return code
