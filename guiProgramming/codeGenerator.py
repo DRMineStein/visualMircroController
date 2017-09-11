@@ -12,9 +12,9 @@ def generateCode(dataPin, dataStates, dataFlow):
     cCode.close()
 
 def genSetup(dataPin, dataStates, dataFlow):
-    code = "\n/* setup() function initialising the pin configuration*/\n\n"
+    code = "\n/* setup() function initialising the pin configuration */\n\n"
     indent = 0
-    code += "void setup(){\n"
+    code += "void setup() {\n"
     indent += 1
     for d in list(dataPin.keys()):
 
@@ -28,9 +28,9 @@ def genSetup(dataPin, dataStates, dataFlow):
 
             if dataPin[d][2] > 0:
                 if dataPin[d][1] != '' and int(dataPin[d][1]) > 0:
-                    code += "\tdigitalWrite(" + dataPin[d][0] + ',HIGH);\n'
+                    code += "\tdigitalWrite(" + dataPin[d][0] + ', HIGH);\n'
                 elif dataPin[d][1] != '' and int(dataPin[d][1]) <= 0:
-                    code += "\tdigitalWrite(" + dataPin[d][0] + ',LOW);\n'
+                    code += "\tdigitalWrite(" + dataPin[d][0] + ', LOW);\n'
                 else:
                     pass
 
@@ -43,7 +43,7 @@ def initVariable(dataPin, dataStates, dataFlow):
     indent += 1
     for d in list(dataPin.keys()):
         if d[0] == 'D':
-            code += "int "+dataPin[d][0]+' = '+d+';\n'
+            code += "int "+dataPin[d][0]+' = '+d[1:]+';\n'
 
     return code
 
@@ -64,7 +64,7 @@ def genLoop(dataPin, dataStates, dataFlow):
 
     code += "\n/* The loop function runs over and over again forever */\n"
     indent = 0
-    code += "void loop(){\n"
+    code += "void loop() {\n"
     indent += 1
     code += "\t"*indent + "switch(s){\n"
     indent += 1
