@@ -14,8 +14,8 @@ def digitalWrite(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     label2 = Label(self.top, text="Variable name:", bg="gray")
     label2.grid(row=2, column=0, sticky=W)
 
-    e1 = Entry(self.top)
-    e2 = Entry(self.top)
+    e1 = Entry(self.top, highlightbackground="gray")
+    e2 = Entry(self.top, highlightbackground="gray")
 
     e1.grid(row=1, column=1)
     e2.grid(row=2, column=1)
@@ -30,7 +30,7 @@ def digitalWrite(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     statusLabel.txtvar = status
     statusLabel.grid(row=3, sticky=W)
 
-    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", text="Save pin",
+    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Save pin",
                      command=lambda t=title, state=e1, var=e2, check=c, l=statusLabel, fm=frameMaster,
                                     dP=dataPin, dS=dataStates, dF=dataFlow:
                      addDigitalWrite(t, state, var, check, l, fm, dP, dS, dF))
@@ -78,8 +78,8 @@ def wait(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     label2 = Label(self.top, text="Timeout:", bg="gray")
     label2.grid(row=2, column=0, sticky=W)
 
-    e1 = Entry(self.top)
-    e2 = Entry(self.top)
+    e1 = Entry(self.top, highlightbackground="gray")
+    e2 = Entry(self.top, highlightbackground="gray")
 
     e1.grid(row=1, column=1)
     e2.grid(row=2, column=1)
@@ -89,7 +89,7 @@ def wait(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     statusLabel.txtvar = status
     statusLabel.grid(row=3, sticky=W)
 
-    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", text="Save pin",
+    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Save pin",
                      command=lambda t=title, state=e1, timeout=e2, l=statusLabel, fm=frameMaster,
                                     dP=dataPin, dS=dataStates, dF=dataFlow:
                      addWait(t, state, timeout, l, fm, dP, dS, dF))

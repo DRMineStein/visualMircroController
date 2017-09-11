@@ -76,13 +76,13 @@ def gotoBoardView(self, view_list, dataPin, dataStates, dataFlow):
     view_list.append(rightBottom_frame)
 
     # Add scroll bar in the top right frame for the list of boards
-    rightTop_frame_scrollbar = utils.add_scrollbar(self, rightTop_frame, "List of boards:", boards, pc.setPort,
+    rightTop_frame_scrollbar = utils.add_scrollbar(self, rightTop_frame, "List of boards:", boards, [pc.setPort] * len(boards),
                                                    1*self.master.winfo_screenwidth()/4 - 25,
                                                    1 *self.master.winfo_screenheight() / 3, view_list, dataPin, dataStates, dataFlow, 'pin')
     view_list = view_list + rightTop_frame_scrollbar
 
     # Add scroll bar in the top right frame for the list of boards
-    rightBottom_frame_scrollbar = utils.add_scrollbar(self, rightBottom_frame, "List of pins:", arduino.portList, pc.setPort,
+    rightBottom_frame_scrollbar = utils.add_scrollbar(self, rightBottom_frame, "List of pins:", arduino.portList, [pc.setPort] * len(arduino.portList),
                                                       1 * self.master.winfo_screenwidth() / 4 - 25,
                                                       2 * self.master.winfo_screenheight() / 3, view_list, dataPin, dataStates, dataFlow, 'pin')
     view_list = view_list + rightBottom_frame_scrollbar
@@ -138,20 +138,20 @@ def gotoStateView(self, view_list, dataPin, dataStates, dataFlow):
     # b = Button(rightTop_frame, text="OK", command=quit)
     # b.grid(row=0, column=0, sticky="we")
 
-    buttonAddState = Button(rightTop_frame, text="Add new state", width= 37,
+    buttonAddState = Button(rightTop_frame, text="Add new state", width= 37, highlightbackground="gray",
                      command=lambda s=rightTop_frame, t="Add new state", m=self, v=view_list, dP=dataPin, dS=dataStates, dF=dataFlow:
                      sc.addState(s, t, m, view_list, dP, dS, dF))
     buttonAddState.grid(row=0, column=0, sticky="we")
     view_list.append(buttonAddState)
 
-    buttonRemoveState = Button(rightTop_frame, text="Remove state", width=37,
+    buttonRemoveState = Button(rightTop_frame, text="Remove state", width=37, highlightbackground="gray",
                             command=lambda s=rightTop_frame, t="Add new state", m=self, v=view_list, dP=dataPin,
                                            dS=dataStates, dF=dataFlow:
                             sc.removeState(s, t, m, view_list, dP, dS, dF))
     buttonRemoveState.grid(row=1, column=0, sticky="we")
     view_list.append(buttonRemoveState)
 
-    buttonGenerateGraph = Button(rightTop_frame, text="Generate graph", width=37,
+    buttonGenerateGraph = Button(rightTop_frame, text="Generate graph", width=37, highlightbackground="gray",
                             command=lambda s=rightTop_frame, figFrame = left_frame_picture,
                                            w=3 * self.master.winfo_screenwidth() / 4,
                                            h=self.master.winfo_screenheight() - 150,
@@ -162,7 +162,7 @@ def gotoStateView(self, view_list, dataPin, dataStates, dataFlow):
 
     # Add scroll bar in the top right frame for the list of boards
     rightBottom_frame_scrollbar = utils.add_scrollbar(self, rightBottom_frame, "List of states:", list(dataStates.keys()),
-                                                      sc.configState,
+                                                      [sc.configState] * len(dataStates),
                                                       1 * self.master.winfo_screenwidth() / 4 - 25,
                                                       2 * self.master.winfo_screenheight() / 3 + 60, view_list, dataPin, dataStates, dataFlow, 'state')
     view_list = view_list + rightBottom_frame_scrollbar
@@ -211,7 +211,7 @@ def gotoDesignView(self, view_list, dataPin, dataStates, dataFlow):
     view_list.append(rightBottom_frame)
 
     # Add scroll bar in the top right frame for the list of boards
-    buttonGenerateGraph = Button(rightTop_frame, text="Generate state flow", width=37,
+    buttonGenerateGraph = Button(rightTop_frame, text="Generate state flow", width=37, highlightbackground="gray",
                                  command=lambda s=rightTop_frame, t="State flow", figFrame=left_frame_picture,
                                                 w=3 * self.master.winfo_screenwidth() / 4,
                                                 h=self.master.winfo_screenheight() - 150,
@@ -221,7 +221,7 @@ def gotoDesignView(self, view_list, dataPin, dataStates, dataFlow):
     view_list.append(buttonGenerateGraph)
 
     # Add scroll bar in the top right frame for the list of boards
-    rightBottom_frame_scrollbar = utils.add_scrollbar(self, rightBottom_frame, "Add building block:", arduino.opFunc.keys(), arduino.opFunc,
+    rightBottom_frame_scrollbar = utils.add_scrollbar(self, rightBottom_frame, "Add building block:", arduino.opFunc.keys(), arduino.opFunc.values(),
                                                       1 * self.master.winfo_screenwidth() / 4 - 25,
                                                       2 * self.master.winfo_screenheight() / 3 + 60, view_list, dataPin, dataStates, dataFlow, 'pin')
     view_list = view_list + rightBottom_frame_scrollbar

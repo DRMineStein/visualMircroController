@@ -41,4 +41,4 @@ def generateFlow(t, dataFlow,w,h):
     call("dot -Tpng -Gsize="+str(w/10)+","+str(h/10)+"\! -Gdpi=10 " + t + "_flow.dot > " + t + "_flow.png",
          shell=True)
     call("sips -s format gif " + t + "_flow.png --out " + t + "_flow.gif", shell=True)
-    # call("rm " + t + "_flow.png", shell=True)
+    call("rm " + t + "_flow.png", shell=True)

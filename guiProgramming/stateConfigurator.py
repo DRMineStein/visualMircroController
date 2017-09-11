@@ -26,9 +26,9 @@ def addState(self, title, frameMaster, view_list, dataPin, dataStates, dataFlow)
     label3 = Label(self.top, text="Name of different states should be separated by commas", bg="gray")
     label3.grid(row=4, sticky=W)
 
-    e0 = Entry(self.top)
-    e1 = Entry(self.top)
-    e2 = Entry(self.top)
+    e0 = Entry(self.top, highlightbackground="gray")
+    e1 = Entry(self.top, highlightbackground="gray")
+    e2 = Entry(self.top, highlightbackground="gray")
 
     e0.grid(row=1, column=1)
     e1.grid(row=2, column=1)
@@ -44,7 +44,7 @@ def addState(self, title, frameMaster, view_list, dataPin, dataStates, dataFlow)
     statusLable.txtvar = stausString
     statusLable.grid(row=5, sticky=W)
 
-    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", text="Save state",
+    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Save state",
                      command=lambda s=self, t=e0, ein=e1, eout=e2, check=c, l=statusLable, fm=frameMaster, v=view_list, dP=dataPin, dS=dataStates, dF=dataFlow:
                      saveState(s, t, ein, eout, check, l, fm, v, dP, dS, dF))
     button1.grid(row=3, column=3)
@@ -68,15 +68,15 @@ def configState(self, title, frameMaster, view_list, dataPin, dataStates, dataFl
     label3.grid(row=3, sticky=W)
 
     # e0 = Entry(self.top)
-    e1 = Entry(self.top)
-    e2 = Entry(self.top)
+    e1 = Entry(self.top, highlightbackground="gray")
+    e2 = Entry(self.top, highlightbackground="gray")
 
     # e0.grid(row=1, column=1)
     e1.grid(row=1, column=1)
     e2.grid(row=2, column=1)
 
     var = IntVar()
-    c = Checkbutton(self.top, text="Final state:", variable=var, bg="gray")
+    c = Checkbutton(self.top, text="Final state:", variable=var, bg="gray", highlightbackground="gray")
     c.var = var
     c.grid(row=1, column=3, sticky=W)
 
@@ -85,7 +85,7 @@ def configState(self, title, frameMaster, view_list, dataPin, dataStates, dataFl
     statusLable.txtvar = stausString
     statusLable.grid(row=4, sticky=W)
 
-    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", text="Set state",
+    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Set state",
                      command=lambda s=self, t=title, ein=e1, eout=e2, check=c, l=statusLable, fm=frameMaster, v=view_list, dP=dataPin, dS=dataStates, dF=dataFlow:
                      setState(s, t, ein, eout, check, l, fm, v, dP, dS, dF))
     button1.grid(row=3, column=3)
@@ -99,7 +99,7 @@ def removeState(self, title, frameMaster, view_list, dataPin, dataStates, dataFl
     descriptionLable = Label(self.top, text="Please enter the name of the states to remove:", bg="gray")
     descriptionLable.grid(row=0, sticky=W)
 
-    e1 = Entry(self.top)
+    e1 = Entry(self.top, highlightbackground="gray")
     # e2 = Entry(self.top)
 
     e1.grid(row=1, column=0)
@@ -109,7 +109,7 @@ def removeState(self, title, frameMaster, view_list, dataPin, dataStates, dataFl
     statusLable.txtvar = stausString
     statusLable.grid(row=2, sticky=W)
 
-    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", text="Set state",
+    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Set state",
                      command=lambda s=self, t=title, ein=e1, l=statusLable, fm=frameMaster, v=view_list, dP=dataPin, dS=dataStates, dF=dataFlow:
                      rmState(s, t, ein, l, fm, v, dP, dS, dF))
     button1.grid(row=1, column=1)

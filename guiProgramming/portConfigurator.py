@@ -14,14 +14,14 @@ def setPort(self, title, frameMaster, view_list, dataPin, dataStates, dataFlow):
     label2 = Label(self.top, text="Initial value:", bg="gray")
     label2.grid(row=2, sticky=W)
 
-    e1 = Entry(self.top)
-    e2 = Entry(self.top)
+    e1 = Entry(self.top, highlightbackground="gray")
+    e2 = Entry(self.top, highlightbackground="gray")
 
     e1.grid(row=1, column=1)
     e2.grid(row=2, column=1)
 
     var = IntVar()
-    c = Checkbutton(self.top, text="OUTPUT", variable=var, bg="gray")
+    c = Checkbutton(self.top, text="OUTPUT", variable=var, bg="gray", highlightbackground="gray")
     c.var = var
     c.grid(row=1, column=3, sticky=W)
 
@@ -30,7 +30,7 @@ def setPort(self, title, frameMaster, view_list, dataPin, dataStates, dataFlow):
     statusLable.txtvar = stausString
     statusLable.grid(row=3, sticky=W)
 
-    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", text="Save pin",
+    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Save pin",
                      command=lambda t=title, varN=e1, varV=e2, check=c, l=statusLable, fm=frameMaster, v=view_list, dP=dataPin, dS=dataStates, dF=dataFlow:
                      savePort(t, varN, varV, check, l, fm, v, dP, dS, dF))
     button1.grid(row=2, column=3)
@@ -43,7 +43,7 @@ def savePort(title, e1, e2, c, l, fm, v, dP, dS, dF):
         e1.delete(0, END)
         e2.delete(0, END)
         c.var.set(0)
-        l.txtvar.set("In order to save the pin at least a variable name is requried")
+        l.txtvar.set("In order to save the pin at least a variable name is required")
         save = False
     else:
         for key, values in dS.iteritems():

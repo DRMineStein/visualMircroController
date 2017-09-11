@@ -20,9 +20,9 @@ def add_picture(self, frame, picture_name, width, height, resize):
 
 def add_scrollbar(master, frame, title, scroll_list, cmd, w, h, view_list, dataPin, dataStates, dataFlow, type):
     # view_list = []
-    canvasScroll = Canvas(frame, bg="grey")
+    canvasScroll = Canvas(frame, bg="grey", highlightbackground="gray")
     view_list.append(canvasScroll)
-    frameScroll = Frame(canvasScroll, bg="grey")
+    frameScroll = Frame(canvasScroll, bg="grey", highlightbackground="gray")
     view_list.append(frameScroll)
     myscrollbar = Scrollbar(frame, orient="vertical", command=canvasScroll.yview)
     view_list.append(myscrollbar)
@@ -30,6 +30,7 @@ def add_scrollbar(master, frame, title, scroll_list, cmd, w, h, view_list, dataP
 
     myscrollbar.pack(side="right", fill="y")
     canvasScroll.pack(side="left")
+
     canvasScroll.create_window((0, 0), window=frameScroll, anchor='nw')
     # frameScrollBoard.bind("<Configure>", utils.myfunctionScroll)
     frameScroll.bind("<Configure>", lambda event, c=canvasScroll, width=w, height=h:
@@ -40,12 +41,16 @@ def add_scrollbar(master, frame, title, scroll_list, cmd, w, h, view_list, dataP
     return view_list
 
 
-def buttonScroll(frameScroll, title, row, col, l, cmd, frameMaster, view_list, dataPin, dataStates, dataFlow):
+def buttonScroll(frameScroll, title, row, col, l, cmds, frameMaster, view_list, dataPin, dataStates, dataFlow):
     listBoardLabel = Label(frameScroll, text=title, bg="grey").grid(row=row, column=col, sticky=E+W)
     gridPos = 1
     btn_list = []
 
-    for b in l:
+    for i in range(0, len(l)):
+
+        b = l[i]
+        cmd = cmds[i]
+
         btn = Button(frameScroll, height=1, width=35, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text=b,
                          command=lambda command=cmd, f=frameScroll, t=b, fm=frameMaster, v=view_list, dP=dataPin, dS=dataStates,
                                         dF=dataFlow:

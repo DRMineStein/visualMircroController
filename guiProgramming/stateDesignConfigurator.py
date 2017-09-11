@@ -13,7 +13,7 @@ def getStateOperation(self, title, figFrame, width, height, dataPin, dataStates,
     label0 = Label(self.top, text="State name:", bg="gray")
     label0.grid(row=1, sticky=W)
 
-    e0 = Entry(self.top)
+    e0 = Entry(self.top, highlightbackground="gray")
 
     e0.grid(row=1, column=1)
 
@@ -22,7 +22,7 @@ def getStateOperation(self, title, figFrame, width, height, dataPin, dataStates,
     statusLable.txtvar = stausString
     statusLable.grid(row=2, sticky=W)
 
-    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", text="Retrieve state",
+    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Retrieve state",
                      command=lambda s=self, t=e0, l=statusLable, fm=figFrame,
                                     dP=dataPin, dS=dataStates, dF=dataFlow, w=width, h=height:
                      retriveStateFlow(s, t, l, fm, dP, dS, dF, w, h))
