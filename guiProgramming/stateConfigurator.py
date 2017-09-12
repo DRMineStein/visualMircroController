@@ -203,12 +203,16 @@ def saveState(self, e0, e1, e2, c, l, fm, v, dP, dS, dF):
             dS[s] = (incPrevState, outcPrevState)
             print dS
 
+        dF[e0.get()] = []
+
         l.txtvar.set("State has been created correctly.")
         e0.delete(0, END)
         e1.delete(0, END)
         e2.delete(0, END)
         ViewsMenuFunction.gotoStateView(fm, v, dP, dS, dF)
     print dS
+    print "DF="
+    print dF
 
 
 def setState(self, t, e1, e2, c, l, fm, v, dP, dS, dF):
@@ -294,5 +298,5 @@ def rmState(s, t, ein, l, fm, view_list, dP, dS, dF):
     print dS
 
 def generateGraph(self, figFrame, w, h, dataPin, dataStates, dataFlow):
-    gv.createGraph(dataStates, 'FSM', w, h)
-    utils.add_picture(self, figFrame, 'state_graph', w, h, False)
+    gv.createGraph(dataStates, 'FSM', w - 5, h)
+    utils.add_picture(self, figFrame, 'state_graph', w - 5, h, False)

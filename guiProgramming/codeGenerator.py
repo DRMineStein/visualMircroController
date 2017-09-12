@@ -34,6 +34,9 @@ def genSetup(dataPin, dataStates, dataFlow):
                 else:
                     pass
 
+        elif dataPin[d][2] > 0 and d[0] == 'A':
+            code += "\tanalogWrite(" + dataPin[d][0] + ', ' + dataPin[d][1] + ');\n'
+
     code += "}\n"
     return code
 
@@ -42,8 +45,7 @@ def initVariable(dataPin, dataStates, dataFlow):
     indent = 0
     indent += 1
     for d in list(dataPin.keys()):
-        if d[0] == 'D':
-            code += "int "+dataPin[d][0]+' = '+d[1:]+';\n'
+        code += "int "+dataPin[d][0]+' = '+d[1:]+';\n'
 
     return code
 
@@ -93,10 +95,8 @@ def genLoop(dataPin, dataStates, dataFlow):
 
 def genStateBlock(indent, state, dataPin, dataStates, dataFlow):
     code = ""
-    for key in dataFlow.keys():
-        print key
-        print dataFlow[key]
-        if state == key:
-            code += "\t"*indent + dataFlow[key][0]
+
+    for key in dataFlow[state]:
+        code += "\t"*indent + key[0] + "\n"
 
     return code

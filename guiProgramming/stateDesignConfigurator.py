@@ -41,8 +41,9 @@ def retriveStateFlow(self, title, statusLable, figFrame, dataPin, dataStates, da
         readyToPlot = False
 
     if readyToPlot:
-        statusLable.txtvar.set("State found.")
-        gv.generateFlow(title.get(),dataFlow, w, h)
-        utils.add_picture(self, figFrame, "empty", w*2, h*2, False)
-        utils.add_picture(self, figFrame, title.get()+'_flow', w, h, False)
+        print dataFlow
+        gv.generateFlow(title.get(),dataFlow, w - 5, h)
+        utils.clear_frame(figFrame)
+        utils.add_picture(self, figFrame, title.get()+'_flow', w - 5, h, False)
+        statusLable.txtvar.set("Graph successfully generated.")
 

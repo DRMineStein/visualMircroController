@@ -4,8 +4,9 @@ call(["ls", "-l"])
 def createGraph(dataStates, type, w, h):
     if type == 'FSM':
         graph = "digraph finite_state_machine {"+"\n"
-        graph += "\t"+"rankdir=LR;"+"\n"
-        graph += "\t"+"size=\"8,5\""+"\n"
+        graph += "\t" + "rankdir=LR;"+"\n"
+        graph += "\t" + "bgcolor=gray;"+"\n"
+        graph += "\t" + "size=\"8,5\";\n"
         graph += "\t" + "node [shape = circle fontsize=10 fixedsize=TRUE];"+"\n"
 
         for key in dataStates.keys():
@@ -23,16 +24,20 @@ def createGraph(dataStates, type, w, h):
 
     call("dot -Tpng -Gsize="+str(w/10)+","+str(h/10)+"\! -Gdpi=10 state_graph.dot > state_graph.png", shell=True)
     call("sips -s format gif state_graph.png --out state_graph.gif", shell=True)
-    call("rm state_graph.png", shell=True)
-
 
 def generateFlow(t, dataFlow,w,h):
     graph = "digraph " + t +"_flow {" + "\n"
-    graph += "\t" + "size=\"8,5\"" + "\n"
+    graph += "\t" + "bgcolor=gray;"+"\n"
+    graph += "\t" + "size=\"8,5\";\n"
     graph += "\t" + "node [shape = \"box\"];" + "\n"
-    for d in dataFlow.keys():
-        if t == d:
-            graph += "\t" + dataFlow[d][1] + "->" + dataFlow[d][2] + ";" + "\n"
+
+    last = "init"
+
+    for (_, identifier) in dataFlow[t]:
+        graph += "\t" + last + "->" + identifier + ";\n"
+        last = identifier;
+    
+    graph += "\t" + last + "-> exit;\n"
     graph += "}" + "\n"
 
     dotFile = open(t +"_flow.dot","w")

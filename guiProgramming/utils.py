@@ -2,6 +2,10 @@ from Tkinter import *
 from PIL import ImageTk, Image
 import arduino
 
+def clear_frame(frame):
+    for child in frame.winfo_children():
+        child.destroy()
+
 def add_picture(self, frame, picture_name, width, height, resize):
     path = picture_name+".gif"
     im_temp = Image.open(path)
@@ -12,9 +16,8 @@ def add_picture(self, frame, picture_name, width, height, resize):
         self.photo = PhotoImage(file=picture_name+"resized.gif")
     else:
         self.photo = PhotoImage(file=picture_name + ".gif")
-    picture = Label(frame, image=self.photo)  # Sets the image too the label
-    picture.image = self.photo
-    picture.grid(row=0, column=0, sticky="nsew")
+    picture = Label(frame, bg="gray", image=self.photo)  # Sets the image to the label
+    picture.grid(row=0, column=0)
     return picture
 
 
@@ -28,10 +31,11 @@ def add_scrollbar(master, frame, title, scroll_list, cmd, w, h, view_list, dataP
     view_list.append(myscrollbar)
     canvasScroll.configure(yscrollcommand=myscrollbar.set)
 
-    myscrollbar.pack(side="right", fill="y")
-    canvasScroll.pack(side="left")
+    myscrollbar.pack(side="right", fill="both")
+    canvasScroll.pack(fill="both")
+    frameScroll.pack(fill="both")
 
-    canvasScroll.create_window((0, 0), window=frameScroll, anchor='nw')
+    canvasScroll.create_window((0, 0), window=frameScroll, anchor='center')
     # frameScrollBoard.bind("<Configure>", utils.myfunctionScroll)
     frameScroll.bind("<Configure>", lambda event, c=canvasScroll, width=w, height=h:
         myfunctionScroll(event, c, width, height))
@@ -42,7 +46,7 @@ def add_scrollbar(master, frame, title, scroll_list, cmd, w, h, view_list, dataP
 
 
 def buttonScroll(frameScroll, title, row, col, l, cmds, frameMaster, view_list, dataPin, dataStates, dataFlow):
-    listBoardLabel = Label(frameScroll, text=title, bg="grey").grid(row=row, column=col, sticky=E+W)
+    listBoardLabel = Label(frameScroll, text=title, bg="grey").grid(row=row, column=col)
     gridPos = 1
     btn_list = []
 
@@ -51,7 +55,7 @@ def buttonScroll(frameScroll, title, row, col, l, cmds, frameMaster, view_list, 
         b = l[i]
         cmd = cmds[i]
 
-        btn = Button(frameScroll, height=1, width=35, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text=b,
+        btn = Button(frameScroll, height=1, width=40, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text=b,
                          command=lambda command=cmd, f=frameScroll, t=b, fm=frameMaster, v=view_list, dP=dataPin, dS=dataStates,
                                         dF=dataFlow:
                          command(f, t, fm, v, dP, dS, dF))

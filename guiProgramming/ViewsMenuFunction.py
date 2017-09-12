@@ -5,11 +5,7 @@ import stateConfigurator as sc
 import stateDesignConfigurator as sdc
 import arduino
 
-boards = ["nucleo_board", "bt_board"]
-pinLayoutNucleoBoard = ["analog1",
-                        "analog2",
-                        "digital1",
-                        "digital2"]
+boards = ["arduino_uno_board"]
 
 stateOptions = ["Add new state", "Remove state", "Generate states graph"]
 
@@ -53,15 +49,22 @@ def gotoBoardView(self, view_list, dataPin, dataStates, dataFlow):
     left_frame.grid(row=0, column=0, sticky="ns")
     view_list.append(left_frame)
 
+
     # Add picture in the left frame
-    left_frame_picture = utils.add_picture(self, left_frame, "nucleo_board", 3 * self.master.winfo_screenwidth() / 4,
-                                           self.master.winfo_screenheight() - 150, True)
+    left_frame_picture = utils.add_picture(self, left_frame, "arduino_uno_boardlayout", 3 * self.master.winfo_screenwidth() / 4 - 5,
+                                           self.master.winfo_screenheight() - 210, True)
     view_list.append(left_frame_picture)
+
+
+    # Separator line
+    line = Canvas(self.center_frame, width=100, highlightbackground="light green", bg="light green", height=self.master.winfo_screenheight())
+    line.grid(row=0, column=1)
+    view_list.append(line)
 
     # Create right frame
     right_frame = Frame(self.center_frame, bg='gray', width=1 * self.master.winfo_screenwidth() / 4,
                         height=self.master.winfo_screenheight())
-    right_frame.grid(row=0, column=1, sticky="ns")
+    right_frame.grid(row=0, column=2, sticky="ns")
     view_list.append(right_frame)
 
     # Split right frame in top and bottom
@@ -84,7 +87,7 @@ def gotoBoardView(self, view_list, dataPin, dataStates, dataFlow):
     # Add scroll bar in the top right frame for the list of boards
     rightBottom_frame_scrollbar = utils.add_scrollbar(self, rightBottom_frame, "List of pins:", arduino.portList, [pc.setPort] * len(arduino.portList),
                                                       1 * self.master.winfo_screenwidth() / 4 - 25,
-                                                      2 * self.master.winfo_screenheight() / 3, view_list, dataPin, dataStates, dataFlow, 'pin')
+                                                      2 * self.master.winfo_screenheight() / 3 - 180, view_list, dataPin, dataStates, dataFlow, 'pin')
     view_list = view_list + rightBottom_frame_scrollbar
     # data["PIN"] = dataPin
     print dataPin
@@ -106,20 +109,21 @@ def gotoStateView(self, view_list, dataPin, dataStates, dataFlow):
     view_list.append(lStatus)
 
     # Create left frame
-    left_frame = Frame(self.center_frame, bg='gray', width=3 * self.master.winfo_screenwidth() / 4,
+    left_frame = Frame(self.center_frame, bg='gray', highlightbackground="gray", width=3 * self.master.winfo_screenwidth() / 4 - 5,
                        height=self.master.winfo_screenheight())
     left_frame.grid(row=0, column=0, sticky="ns")
     view_list.append(left_frame)
 
-    # Add picture in the left frame
-    left_frame_picture = utils.add_picture(self, left_frame, "empty", 3 * self.master.winfo_screenwidth() / 4,
-                                           self.master.winfo_screenheight() - 150, True)
-    view_list.append(left_frame_picture)
+
+    # Separator line
+    line = Canvas(self.center_frame, width=0, highlightbackground="light blue", height=self.master.winfo_screenheight())
+    line.grid(row=0, column=1)
+    view_list.append(line)
 
     # Create right frame
     right_frame = Frame(self.center_frame, bg='gray', width=1 * self.master.winfo_screenwidth() / 4,
                         height=self.master.winfo_screenheight())
-    right_frame.grid(row=0, column=1, sticky="ns")
+    right_frame.grid(row=0, column=2, sticky="ns")
     view_list.append(right_frame)
 
     # Split right frame in top and bottom
@@ -152,7 +156,7 @@ def gotoStateView(self, view_list, dataPin, dataStates, dataFlow):
     view_list.append(buttonRemoveState)
 
     buttonGenerateGraph = Button(rightTop_frame, text="Generate graph", width=37, highlightbackground="gray",
-                            command=lambda s=rightTop_frame, figFrame = left_frame_picture,
+                            command=lambda s=rightTop_frame, figFrame = left_frame,
                                            w=3 * self.master.winfo_screenwidth() / 4,
                                            h=self.master.winfo_screenheight() - 150,
                                            dP=dataPin, dS=dataStates, dF=dataFlow:
@@ -183,20 +187,20 @@ def gotoDesignView(self, view_list, dataPin, dataStates, dataFlow):
     view_list.append(lStatus)
 
     # Create left frame
-    left_frame = Frame(self.center_frame, bg='gray', width=3*self.master.winfo_screenwidth()/4,
+    left_frame = Frame(self.center_frame, bg='gray', width=3*self.master.winfo_screenwidth()/4 - 5,
                        height=self.master.winfo_screenheight())
     left_frame.grid(row=0, column=0, sticky="ns")
     view_list.append(left_frame)
 
-    # Add picture in the left frame
-    left_frame_picture = utils.add_picture(self, left_frame, "empty", 3 * self.master.winfo_screenwidth() / 4,
-                                           self.master.winfo_screenheight() - 150, True)
-    view_list.append(left_frame_picture)
+    # Separator line
+    line = Canvas(self.center_frame, width=0, highlightbackground="salmon", height=self.master.winfo_screenheight())
+    line.grid(row=0, column=1)
+    view_list.append(line)
 
     # Create right frame
     right_frame = Frame(self.center_frame, bg='gray', width=1 * self.master.winfo_screenwidth() / 4,
                         height=self.master.winfo_screenheight())
-    right_frame.grid(row=0, column=1, sticky="ns")
+    right_frame.grid(row=0, column=2, sticky="ns")
     view_list.append(right_frame)
 
     # Split right frame in top and bottom
@@ -212,7 +216,7 @@ def gotoDesignView(self, view_list, dataPin, dataStates, dataFlow):
 
     # Add scroll bar in the top right frame for the list of boards
     buttonGenerateGraph = Button(rightTop_frame, text="Generate state flow", width=37, highlightbackground="gray",
-                                 command=lambda s=rightTop_frame, t="State flow", figFrame=left_frame_picture,
+                                 command=lambda s=rightTop_frame, t="State flow", figFrame=left_frame,
                                                 w=3 * self.master.winfo_screenwidth() / 4,
                                                 h=self.master.winfo_screenheight() - 150,
                                                 dP=dataPin, dS=dataStates, dF=dataFlow:
