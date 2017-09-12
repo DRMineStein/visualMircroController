@@ -27,3 +27,12 @@ def setupMenu(self, view_list, dataPin, dataStates, dataFlow):
     menu.add_command(label="Board", command=lambda:ViewsMenuFunction.gotoBoardView(self, view_list, dataPin, dataStates, dataFlow))
     menu.add_command(label="State transition builder", command=lambda:ViewsMenuFunction.gotoStateView(self, view_list, dataPin, dataStates, dataFlow))
     menu.add_command(label="Design flow", command=lambda:ViewsMenuFunction.gotoDesignView(self, view_list, dataPin, dataStates, dataFlow))
+
+    # Connection cascade menu option
+    connectionMenu = Menu(self.menubar, tearoff=0)
+    serialMenu = Menu(self.menubar)
+
+    self.menubar.add_cascade(label="Connections", menu=connectionMenu)
+    connectionMenu.add_cascade(label="Serial", menu=serialMenu)
+    for name in ("Set Data Transmissionrate", ""):
+        serialMenu.add_command(label=name)
