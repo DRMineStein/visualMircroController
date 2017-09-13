@@ -294,7 +294,7 @@ def rmState(s, t, ein, l, fm, view_list, dP, dS, dF):
             dS[key] = (inc, outc)
 
     if removed:
-        ViewsMenuFunction.gotoStateView(fm, view_list, dP, dS)
+        ViewsMenuFunction.gotoStateView(fm, view_list, dP, dS, dF)
     print dS
 
 def generateGraph(self, figFrame, w, h, dataPin, dataStates, dataFlow):

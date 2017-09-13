@@ -1,6 +1,7 @@
 from Tkinter import *
 import pickle
 import datetime
+import ViewsMenuFunction
 
 def newProject(self, view_list, dataPin, dataStates, dataFlow):
     print(dataPin, dataStates, dataFlow)
@@ -16,19 +17,21 @@ def saveProject(self, view_list, dataPin, dataStates, dataFlow):
 	pickle.dump(data2store, storefile)
 	storefile.close()
 
-def saveAsProject():
+def saveAsProject(self, view_list, dataPin, dataStates, dataFlow):
 	pass
 
-def openProject(self, dataPin, dataStates, dataFlow):
-   print(dataPin)
+def openProject(self, view_list, dataPin, dataStates, dataFlow):
    loadfile = open('test.pickle', 'rb')
    data2load = pickle.load(loadfile)
    loadfile.close()
    
-   dataPin = data2load[0]
-   dataStates = data2load[1]
-   dataFlow = data2load[2]
+   dataPin.clear()
+   dataStates.clear()
+   dataFlow.clear()
 
-   return dataPin, dataStates, dataFlow 
+   dataPin.update(data2load[0])
+   dataStates.update(data2load[1])
+   dataFlow.update(data2load[2])
 
+   ViewsMenuFunction.gotoBoardView(self, view_list, dataPin, dataStates, dataFlow)
 

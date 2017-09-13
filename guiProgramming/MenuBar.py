@@ -9,7 +9,7 @@ def setupMenu(self, view_list, dataPin, dataStates, dataFlow):
     menu = Menu(self.menubar, tearoff=0)
     self.menubar.add_cascade(label="File", menu=menu)
     menu.add_command(label="New", command=lambda:fileMenuFunction.newProject(self,view_list, dataPin, dataFlow, dataStates))
-    menu.add_command(label="Open", command=lambda:fileMenuFunction.openProject(self, dataPin, dataFlow, dataStates))
+    menu.add_command(label="Open", command=lambda:fileMenuFunction.openProject(self, view_list, dataPin, dataFlow, dataStates))
     menu.add_command(label="Save", command=lambda:fileMenuFunction.saveProject(self,view_list, dataPin, dataFlow, dataStates))
     menu.add_command(label="Save as..", command=lambda:fileMenuFunction.saveAsProject(self,view_list, dataPin, dataFlow, dataStates))
     menu.add_command(label="Generate code", command=lambda:codeGenerator.generateCode(dataPin,dataStates, dataFlow))

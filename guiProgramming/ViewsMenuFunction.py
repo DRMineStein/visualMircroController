@@ -5,12 +5,14 @@ import stateConfigurator as sc
 import stateDesignConfigurator as sdc
 import arduino
 
-boards = ["arduino_uno_board"]
-
 stateOptions = ["Add new state", "Remove state", "Generate states graph"]
 
 boardSelected = None
+boards = ["Select Arduino Uno board"]
 pins = []
+
+analogs = ["A0", "A1", "A2", "A3", "A4", "A5"]
+digitals = ["D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "D12", "D13"]
 
 
 # def selectBoard(board, self, view_list):
@@ -24,6 +26,7 @@ pins = []
 
 # def selectPin(pin, self, view_list):
 #     pass
+
 
 
 def gotoBoardView(self, view_list, dataPin, dataStates, dataFlow):
@@ -55,7 +58,6 @@ def gotoBoardView(self, view_list, dataPin, dataStates, dataFlow):
                                            self.master.winfo_screenheight() - 210, True)
     view_list.append(left_frame_picture)
 
-
     # Separator line
     line = Canvas(self.center_frame, width=100, highlightbackground="light green", bg="light green", height=self.master.winfo_screenheight())
     line.grid(row=0, column=1)
@@ -77,21 +79,60 @@ def gotoBoardView(self, view_list, dataPin, dataStates, dataFlow):
                               height=2*self.master.winfo_screenheight()/3)
     rightBottom_frame.grid(row=1, column=0, sticky="ns")
     view_list.append(rightBottom_frame)
-
     # Add scroll bar in the top right frame for the list of boards
     rightTop_frame_scrollbar = utils.add_scrollbar(self, rightTop_frame, "List of boards:", boards, [pc.setPort] * len(boards),
                                                    1*self.master.winfo_screenwidth()/4 - 25,
                                                    1 *self.master.winfo_screenheight() / 3, view_list, dataPin, dataStates, dataFlow, 'pin')
     view_list = view_list + rightTop_frame_scrollbar
 
+    label = Label(rightBottom_frame, text="Setup variables:", bg="grey", highlightbackground="gray")
+    label.grid(row=0, column=0)
+
+    addAnalog = Button(rightBottom_frame, bg="grey", highlightbackground="gray", text="Setup analog pin", 
+        command=lambda s=self, fm=self.master, title="Analog pin selector", pins=analogs, dP=dataPin, dS=dataStates, dF=dataFlow: 
+        pc.configurePin(s, fm, title, pins, dataPin, dataStates, dataFlow))
+
+    view_list.append(addAnalog)
+    addAnalog.grid(row=1, column=0, sticky=E+W)
+
+    addDigital = Button(rightBottom_frame, text="Setup digital pin", bg="grey", highlightbackground="gray",
+        command=lambda s=self, fm=self.master, title="Digital pin selector", pins=digitals, dP=dataPin, dS=dataStates, dF=dataFlow: 
+        pc.configurePin(s, fm, title, pins, dataPin, dataStates, dataFlow))
+    
+    view_list.append(addDigital)
+    addDigital.grid(row=2, column=0, sticky=E+W)
+
+    addCustom = Button(rightBottom_frame, text="Setup custom variable", bg="grey", highlightbackground="gray",
+        command=lambda s=self, fm=self.master, title="Var"+str(len(dataPin)), dP=dataPin, dS=dataStates, dF=dataFlow: 
+        pc.setPort(s, title, fm, view_list, dataPin, dataStates, dataFlow))
+
+    view_list.append(addCustom)
+    addCustom.grid(row=3, column=0, sticky=E+W)
+
+    scrollFrame = Frame(rightBottom_frame, bg="grey", highlightbackground="gray")
+    view_list.append(addDigital)
+    scrollFrame.grid(row=4, column=0, sticky=E+W)
     # Add scroll bar in the top right frame for the list of boards
-    rightBottom_frame_scrollbar = utils.add_scrollbar(self, rightBottom_frame, "List of pins:", arduino.portList, [pc.setPort] * len(arduino.portList),
+    rightBottom_frame_scrollbar = utils.add_scrollbar(self, scrollFrame, "Defined variables:", map(lambda key: describeVar(key, dataPin), dataPin.keys()), [pc.setPort] * len(arduino.portList),
                                                       1 * self.master.winfo_screenwidth() / 4 - 25,
-                                                      2 * self.master.winfo_screenheight() / 3 - 180, view_list, dataPin, dataStates, dataFlow, 'pin')
+                                                      2 * self.master.winfo_screenheight() / 3 - 300, view_list, dataPin, dataStates, dataFlow, 'pin')
     view_list = view_list + rightBottom_frame_scrollbar
     # data["PIN"] = dataPin
     print dataPin
 
+def describeVar(key, dP):
+
+    value = dP[key][1]
+
+    if value == '':
+        value = "?"
+
+    out = dP[key][0] + " = " + value
+    
+    if dP[key] != "V":
+        out += " " + "(" + key + ")"
+
+    return out
 
 def gotoStateView(self, view_list, dataPin, dataStates, dataFlow):
     global stateOptions
