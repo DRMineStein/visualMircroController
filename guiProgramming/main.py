@@ -9,7 +9,7 @@ def removeImage():
     print path
     for file in os.listdir(path) :
         # print file[-4:]
-        if (file[-4:] == ".gif" or file[-4:] == ".png") and (file != 'boardView.gif' or file != 'stateView.gif' or file != 'designFlowView.gif' or file != 'arduino_uno_boardlayout.gif' or file != 'arduino_uno_boardlayoutresized.gif'):
+        if (file[-4:] == ".gif" or file[-4:] == ".png") and file != 'boardView.gif' and file != 'stateView.gif' and file != 'designFlowView.gif' and file != 'arduino_uno_boardlayout.gif':
         # if (file != 'arduino_uno_boardlayout.gif' or file != 'arduino_uno_boardlayoutresized.gif'):
             print path+"/"+file
             os.remove(path+"/"+file)
