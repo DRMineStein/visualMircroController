@@ -22,7 +22,7 @@ pins = []
 #     gotoBoardView(self, view_list)
 
 
-# def selectPin(pin, self, vew_list):
+# def selectPin(pin, self, view_list):
 #     pass
 
 

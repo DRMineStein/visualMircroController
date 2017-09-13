@@ -46,7 +46,7 @@ def addDigitalWrite(title, state, variable, check, status_label, frameMaster, da
             else:
                 logicalState = "LOW"
             
-            code =  "digitalWrite(" + variable.get() + "," + logicalState + ");\n"
+            code = "digitalWrite(" + variable.get() + "," + logicalState + ");\n"
             dataFlow[state.get()].append((code, state.get()+"_"+title.replace(' ',"")))
             status_label.txtvar.set(title + " operation added.")
         else:
