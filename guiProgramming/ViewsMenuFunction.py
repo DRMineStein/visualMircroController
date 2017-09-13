@@ -133,7 +133,7 @@ def gotoStateView(self, view_list, dataPin, dataStates, dataFlow):
     view_list.append(rightTop_frame)
 
     rightBottom_frame = Frame(right_frame, relief=GROOVE, bd=0, bg='gray',
-                              width=1 * self.master.winfo_screenwidth() / 4,
+                              width=1 * self.master.winfo_screenwidth() / 4 + 25,
                               height=2 * self.master.winfo_screenheight() / 3)
     rightBottom_frame.grid(row=1, column=0, sticky="ns")
     view_list.append(rightBottom_frame)
@@ -142,20 +142,20 @@ def gotoStateView(self, view_list, dataPin, dataStates, dataFlow):
     # b = Button(rightTop_frame, text="OK", command=quit)
     # b.grid(row=0, column=0, sticky="we")
 
-    buttonAddState = Button(rightTop_frame, text="Add new state", width= 37, highlightbackground="gray",
+    buttonAddState = Button(rightTop_frame, text="Add new state", width=42, highlightbackground="gray",
                      command=lambda s=rightTop_frame, t="Add new state", m=self, v=view_list, dP=dataPin, dS=dataStates, dF=dataFlow:
                      sc.addState(s, t, m, view_list, dP, dS, dF))
     buttonAddState.grid(row=0, column=0, sticky="we")
     view_list.append(buttonAddState)
 
-    buttonRemoveState = Button(rightTop_frame, text="Remove state", width=37, highlightbackground="gray",
+    buttonRemoveState = Button(rightTop_frame, text="Remove state", width=42, highlightbackground="gray",
                             command=lambda s=rightTop_frame, t="Add new state", m=self, v=view_list, dP=dataPin,
                                            dS=dataStates, dF=dataFlow:
                             sc.removeState(s, t, m, view_list, dP, dS, dF))
     buttonRemoveState.grid(row=1, column=0, sticky="we")
     view_list.append(buttonRemoveState)
 
-    buttonGenerateGraph = Button(rightTop_frame, text="Generate graph", width=37, highlightbackground="gray",
+    buttonGenerateGraph = Button(rightTop_frame, text="Generate graph", width=42, highlightbackground="gray",
                             command=lambda s=rightTop_frame, figFrame = left_frame,
                                            w=3 * self.master.winfo_screenwidth() / 4,
                                            h=self.master.winfo_screenheight() - 150,
@@ -215,13 +215,13 @@ def gotoDesignView(self, view_list, dataPin, dataStates, dataFlow):
     view_list.append(rightBottom_frame)
 
     # Add scroll bar in the top right frame for the list of boards
-    buttonGenerateGraph = Button(rightTop_frame, text="Generate state flow", width=37, highlightbackground="gray",
+    buttonGenerateGraph = Button(rightTop_frame, text="Generate state flow", highlightbackground="gray", width=42, 
                                  command=lambda s=rightTop_frame, t="State flow", figFrame=left_frame,
                                                 w=3 * self.master.winfo_screenwidth() / 4,
                                                 h=self.master.winfo_screenheight() - 150,
                                                 dP=dataPin, dS=dataStates, dF=dataFlow:
                                  sdc.getStateOperation(s, t, figFrame, w, h, dP, dS, dF))
-    buttonGenerateGraph.grid(row=2, column=0, sticky="we")
+    buttonGenerateGraph.grid(row=0, column=0, sticky=E+W)
     view_list.append(buttonGenerateGraph)
 
     # Add scroll bar in the top right frame for the list of boards

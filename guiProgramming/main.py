@@ -2,6 +2,21 @@ from Tkinter import *
 import MenuBar
 from PIL import ImageTk, Image
 import ViewsMenuFunction as vm
+import os
+
+def removeImage():
+    path=os.path.dirname(os.path.abspath(__file__))
+    print path
+    for file in os.listdir(path) :
+        # print file[-4:]
+        if (file[-4:] == ".gif" or file[-4:] == ".png") and (file != 'boardView.gif' or file != 'stateView.gif' or file != 'designFlowView.gif' or file != 'arduino_uno_boardlayout.gif' or file != 'arduino_uno_boardlayoutresized.gif'):
+        # if (file != 'arduino_uno_boardlayout.gif' or file != 'arduino_uno_boardlayoutresized.gif'):
+            print path+"/"+file
+            os.remove(path+"/"+file)
+
+def on_closing():
+    removeImage()
+    root.destroy()
 
 class AppUI(Frame):
 
@@ -92,4 +107,5 @@ root = Tk()
 app = AppUI(root)
 # app.pack()
 
+root.protocol("WM_DELETE_WINDOW", on_closing)
 root.mainloop()

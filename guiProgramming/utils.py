@@ -23,22 +23,28 @@ def add_picture(self, frame, picture_name, width, height, resize):
 
 def add_scrollbar(master, frame, title, scroll_list, cmd, w, h, view_list, dataPin, dataStates, dataFlow, type):
     # view_list = []
-    canvasScroll = Canvas(frame, bg="grey", highlightbackground="gray")
+    label = Label(frame, text=title, bg="grey", highlightbackground="gray")
+    subFrame = Frame(frame, bg="grey", highlightbackground="gray")
+    
+    label.grid(row=0, column=0)
+    subFrame.grid(row=1, column=0)
+
+    canvasScroll = Canvas(subFrame, bg="grey", highlightbackground="gray")
     view_list.append(canvasScroll)
     frameScroll = Frame(canvasScroll, bg="grey", highlightbackground="gray")
     view_list.append(frameScroll)
-    myscrollbar = Scrollbar(frame, orient="vertical", command=canvasScroll.yview)
+    myscrollbar = Scrollbar(subFrame, orient="vertical", command=canvasScroll.yview)
     view_list.append(myscrollbar)
     canvasScroll.configure(yscrollcommand=myscrollbar.set)
 
     myscrollbar.pack(side="right", fill="both")
-    canvasScroll.pack(fill="both")
-    frameScroll.pack(fill="both")
+    canvasScroll.pack(fill="both", expand=1)
+    frameScroll.pack(fill="both", expand=1)
 
-    canvasScroll.create_window((0, 0), window=frameScroll, anchor='center')
+    canvasScroll.create_window((0, 0), window=frameScroll, width=w)
     # frameScrollBoard.bind("<Configure>", utils.myfunctionScroll)
     frameScroll.bind("<Configure>", lambda event, c=canvasScroll, width=w, height=h:
-        myfunctionScroll(event, c, width, height))
+        myfunctionScroll(event, c, width, height - 20))
     # buttonBoardScroll(frameScrollBoard)
     buttonScroll(frameScroll, title, 0, 0, scroll_list, cmd, master, view_list, dataPin, dataStates, dataFlow)
 
@@ -46,7 +52,6 @@ def add_scrollbar(master, frame, title, scroll_list, cmd, w, h, view_list, dataP
 
 
 def buttonScroll(frameScroll, title, row, col, l, cmds, frameMaster, view_list, dataPin, dataStates, dataFlow):
-    listBoardLabel = Label(frameScroll, text=title, bg="grey").grid(row=row, column=col)
     gridPos = 1
     btn_list = []
 
@@ -55,12 +60,12 @@ def buttonScroll(frameScroll, title, row, col, l, cmds, frameMaster, view_list, 
         b = l[i]
         cmd = cmds[i]
 
-        btn = Button(frameScroll, height=1, width=40, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text=b,
+        btn = Button(frameScroll, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text=b,
                          command=lambda command=cmd, f=frameScroll, t=b, fm=frameMaster, v=view_list, dP=dataPin, dS=dataStates,
                                         dF=dataFlow:
                          command(f, t, fm, v, dP, dS, dF))
 
-        btn.grid(row=gridPos, column=0, sticky=E+W)
+        btn.pack(fill=X)
         btn_list.append(btn)
         gridPos += 1
 
@@ -68,4 +73,4 @@ def buttonScroll(frameScroll, title, row, col, l, cmds, frameMaster, view_list, 
 
 
 def myfunctionScroll(event, canvas, w, h):
-        canvas.configure(scrollregion=canvas.bbox("all"), width=w, height=h, bg="gray")
+    canvas.configure(scrollregion=canvas.bbox("all"), width=w, height=h, bg="gray")
