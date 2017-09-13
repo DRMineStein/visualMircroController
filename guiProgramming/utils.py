@@ -2,11 +2,16 @@ from Tkinter import *
 from PIL import ImageTk, Image
 import arduino
 
+collector = []
+
 def clear_frame(frame):
     for child in frame.winfo_children():
         child.destroy()
 
 def add_picture(self, frame, picture_name, width, height, resize):
+    for pict in collector:
+        pict.destroy()
+
     path = picture_name+".gif"
     im_temp = Image.open(path)
     if resize:
@@ -18,6 +23,9 @@ def add_picture(self, frame, picture_name, width, height, resize):
         self.photo = PhotoImage(file=picture_name + ".gif")
     picture = Label(frame, bg="gray", image=self.photo)  # Sets the image to the label
     picture.grid(row=0, column=0)
+
+    collector.append(picture)
+
     return picture
 
 
