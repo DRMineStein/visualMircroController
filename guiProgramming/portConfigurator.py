@@ -72,11 +72,10 @@ def setPort(self, title, frameMaster, view_list, dataPin, dataStates, dataFlow):
     options.config(bg="gray")
     options.grid(row=3, column=1, sticky=W+E)
 
-    for tup in dataPin.values():
-        if tup[0] == title.split()[0]:
-            e1.insert(END, tup[0])
-            e2.insert(END, tup[1])
-            flags.set(tup[2])
+    if title in dataPin.keys():
+        e1.insert(END, dataPin[title][0])
+        e2.insert(END, dataPin[title][1])
+        flags.set(dataPin[title][2])
     
     status = StringVar()
     statusLabel = Label(self.top, textvariable=status, bg="gray")

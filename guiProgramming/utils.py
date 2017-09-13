@@ -61,16 +61,14 @@ def buttonScroll(master, frameScroll, title, row, col, l, cmds, frameMaster, vie
         ref = b
 
         for key in dataPin.keys():
-            if dataPin[key][0] == title.split()[0]:
+            if dataPin[key][0] == b.split()[0]:
                 ref = key
                 break
 
-        print dataPin
-        print b
         cmd = cmds[i]
 
         btn = Button(frameScroll, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text=b,
-                         command=lambda command=cmd, f=master, t=b, fm=frameMaster, v=view_list, dP=dataPin, dS=dataStates,
+                         command=lambda command=cmd, f=master, t=ref, fm=frameMaster, v=view_list, dP=dataPin, dS=dataStates,
                                         dF=dataFlow:
                          command(f, t, fm, v, dP, dS, dF))
 
