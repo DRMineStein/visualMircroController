@@ -87,7 +87,10 @@ def setPort(self, title, frameMaster, view_list, dataPin, dataStates, dataFlow):
                      savePort(self, t, varN, varV, options, l, fm, v, dP, dS, dF))
     button1.grid(row=2, column=3)
 
+
+
     print dataPin
+
 
 def savePort(self, title, e1, e2, options, l, fm, v, dP, dS, dF):
     save = True
@@ -107,7 +110,10 @@ def savePort(self, title, e1, e2, options, l, fm, v, dP, dS, dF):
     if save:
         dP[title] = (e1.get(), e2.get(), options.get())
         self.top.destroy()
-        ViewsMenuFunction.gotoBoardView(self, v, dP, dS, dF)
+        try:
+            ViewsMenuFunction.gotoBoardView(self, v, dP, dS, dF)
+        except AttributeError:
+            pass
     
     print dP
 

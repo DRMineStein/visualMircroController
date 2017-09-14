@@ -65,6 +65,8 @@ class AppUI(Frame):
         descriptionLable = Label(self.center_frame, text="This graphical user interface allows you to program your Microcontroller\n with specific actions and commands, without writing a single line in C/C++", bg="gray")
         descriptionLable.grid(row=0, column=1)
         self.view_handlers.append(descriptionLable)
+        self.view_list.append(descriptionLable)
+
         # Change View Buttons
         # boardView Button
         im_temp = Image.open("boardView.gif")

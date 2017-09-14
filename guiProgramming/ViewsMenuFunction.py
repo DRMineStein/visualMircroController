@@ -41,8 +41,48 @@ def gotoBoardView(self, view_list, dataPin, dataStates, dataFlow):
     lViewName.grid(row=0, column=0, stick=E+W)
     view_list.append(lViewName)
 
+    # Create Bottom frames
+    bottomleft_frame = Frame(self.bottom_frame, bg='gray', width=1*self.master.winfo_screenwidth()/7,
+                             height=1*self.master.winfo_screenheight()/40)
+    bottomleft_frame.grid(row=0, column=0, sticky="ns")
+
+    bottomleftcenter_frame = Frame(self.bottom_frame, bg='light green', width=2*(self.master.winfo_screenwidth()/7),
+                             height=1*self.master.winfo_screenheight()/40)
+    bottomleftcenter_frame.grid(row=0, column=1, sticky="ns")
+
+    bottomrightcenter_frame = Frame(self.bottom_frame, bg='light blue', width=2*(self.master.winfo_screenwidth()/7),
+                             height=1*self.master.winfo_screenheight()/40)
+    bottomrightcenter_frame.grid(row=0, column=2, sticky="ns")
+
+    bottomright_frame = Frame(self.bottom_frame, bg='salmon', width=2*(self.master.winfo_screenwidth()/7),
+                             height=1*self.master.winfo_screenheight()/40)
+    bottomright_frame.grid(row=0, column=3, sticky="ns")
+
+    #Bottom change Viewtabs
+    # boardViewTab
+    boardView_tab = Button(bottomleftcenter_frame, text="Board" , width=bottomleftcenter_frame.winfo_screenwidth()/30, highlightbackground='light green', bg='light green',
+                           command=lambda: gotoBoardView(self, view_list, dataPin, dataStates, dataFlow))
+    boardView_tab.grid(row=0, column=0, sticky=E)
+    self.view_list.append(boardView_tab)
+
+    # stateViewTab
+    stateView_tab = Button(bottomrightcenter_frame, text="State transition Builder",
+                           width=bottomrightcenter_frame.winfo_screenwidth()/30+1, highlightbackground='light blue',
+                           bg='light blue',
+                           command=lambda: gotoStateView(self, view_list, dataPin, dataStates, dataFlow))
+    stateView_tab.grid(row=0, column=0, sticky=W)
+    self.view_list.append(stateView_tab)
+
+    # boardViewTab
+    designView_tab = Button(bottomright_frame, text="Desgin Flow",
+                           width=bottomright_frame.winfo_screenwidth()/30, highlightbackground='salmon',
+                           bg='salmon',
+                           command=lambda: gotoDesignView(self, view_list, dataPin, dataStates, dataFlow))
+    designView_tab.grid(row=0, column=0, sticky=W+E)
+    self.view_list.append(designView_tab)
+
     # Bottom frame label
-    lStatus = Label(self.bottom_frame, text="Not saved", bg="gray")
+    lStatus = Label(bottomleft_frame, text="Not saved", bg="gray")
     lStatus.grid(row=0, column=0, sticky=E+W)
     view_list.append(lStatus)
 
@@ -144,9 +184,50 @@ def gotoStateView(self, view_list, dataPin, dataStates, dataFlow):
     lViewName.grid(row=0, column=0, stick=E + W)
     view_list.append(lViewName)
 
+    # Create Bottom frames
+    bottomleft_frame = Frame(self.bottom_frame, bg='gray', width=1 * self.master.winfo_screenwidth() / 7,
+                             height=1 * self.master.winfo_screenheight() / 40)
+    bottomleft_frame.grid(row=0, column=0, sticky="ns")
+
+    bottomleftcenter_frame = Frame(self.bottom_frame, bg='light green', width=2 * (self.master.winfo_screenwidth() / 7),
+                                   height=1 * self.master.winfo_screenheight() / 40)
+    bottomleftcenter_frame.grid(row=0, column=1, sticky="ns")
+
+    bottomrightcenter_frame = Frame(self.bottom_frame, bg='light blue', width=2 * (self.master.winfo_screenwidth() / 7),
+                                    height=1 * self.master.winfo_screenheight() / 40)
+    bottomrightcenter_frame.grid(row=0, column=2, sticky="ns")
+
+    bottomright_frame = Frame(self.bottom_frame, bg='salmon', width=2 * (self.master.winfo_screenwidth() / 7),
+                              height=1 * self.master.winfo_screenheight() / 40)
+    bottomright_frame.grid(row=0, column=3, sticky="ns")
+
+    # Bottom change Viewtabs
+    # boardViewTab
+    boardView_tab = Button(bottomleftcenter_frame, text="Board", width=bottomleftcenter_frame.winfo_screenwidth() / 30,
+                           highlightbackground='light green', bg='light green',
+                           command=lambda: gotoBoardView(self, view_list, dataPin, dataStates, dataFlow))
+    boardView_tab.grid(row=0, column=0, sticky=E)
+    self.view_list.append(boardView_tab)
+
+    # stateViewTab
+    stateView_tab = Button(bottomrightcenter_frame, text="State transition Builder",
+                           width=bottomrightcenter_frame.winfo_screenwidth() / 30 + 1, highlightbackground='light blue',
+                           bg='light blue',
+                           command=lambda: gotoStateView(self, view_list, dataPin, dataStates, dataFlow))
+    stateView_tab.grid(row=0, column=0, sticky=W)
+    self.view_list.append(stateView_tab)
+
+    # boardViewTab
+    designView_tab = Button(bottomright_frame, text="Desgin Flow",
+                            width=bottomright_frame.winfo_screenwidth() / 30, highlightbackground='salmon',
+                            bg='salmon',
+                            command=lambda: gotoDesignView(self, view_list, dataPin, dataStates, dataFlow))
+    designView_tab.grid(row=0, column=0, sticky=W + E)
+    self.view_list.append(designView_tab)
+
     # Bottom frame label
-    lStatus = Label(self.bottom_frame, text="Not saved", bg="gray")
-    lStatus.grid(row=0, column=0, sticky=E+W)
+    lStatus = Label(bottomleft_frame, text="Not saved", bg="gray")
+    lStatus.grid(row=0, column=0, sticky=E + W)
     view_list.append(lStatus)
 
     # Create left frame
@@ -222,9 +303,50 @@ def gotoDesignView(self, view_list, dataPin, dataStates, dataFlow):
     lViewName.grid(row=0, column=0, stick=E+W)
     view_list.append(lViewName)
 
+    # Create Bottom frames
+    bottomleft_frame = Frame(self.bottom_frame, bg='gray', width=1 * self.master.winfo_screenwidth() / 7,
+                             height=1 * self.master.winfo_screenheight() / 40)
+    bottomleft_frame.grid(row=0, column=0, sticky="ns")
+
+    bottomleftcenter_frame = Frame(self.bottom_frame, bg='light green', width=2 * (self.master.winfo_screenwidth() / 7),
+                                   height=1 * self.master.winfo_screenheight() / 40)
+    bottomleftcenter_frame.grid(row=0, column=1, sticky="ns")
+
+    bottomrightcenter_frame = Frame(self.bottom_frame, bg='light blue', width=2 * (self.master.winfo_screenwidth() / 7),
+                                    height=1 * self.master.winfo_screenheight() / 40)
+    bottomrightcenter_frame.grid(row=0, column=2, sticky="ns")
+
+    bottomright_frame = Frame(self.bottom_frame, bg='salmon', width=2 * (self.master.winfo_screenwidth() / 7),
+                              height=1 * self.master.winfo_screenheight() / 40)
+    bottomright_frame.grid(row=0, column=3, sticky="ns")
+
+    # Bottom change Viewtabs
+    # boardViewTab
+    boardView_tab = Button(bottomleftcenter_frame, text="Board", width=bottomleftcenter_frame.winfo_screenwidth() / 30,
+                           highlightbackground='light green', bg='light green',
+                           command=lambda: gotoBoardView(self, view_list, dataPin, dataStates, dataFlow))
+    boardView_tab.grid(row=0, column=0, sticky=E)
+    self.view_list.append(boardView_tab)
+
+    # stateViewTab
+    stateView_tab = Button(bottomrightcenter_frame, text="State transition Builder",
+                           width=bottomrightcenter_frame.winfo_screenwidth() / 30 + 1, highlightbackground='light blue',
+                           bg='light blue',
+                           command=lambda: gotoStateView(self, view_list, dataPin, dataStates, dataFlow))
+    stateView_tab.grid(row=0, column=0, sticky=W)
+    self.view_list.append(stateView_tab)
+
+    # boardViewTab
+    designView_tab = Button(bottomright_frame, text="Desgin Flow",
+                            width=bottomright_frame.winfo_screenwidth() / 30, highlightbackground='salmon',
+                            bg='salmon',
+                            command=lambda: gotoDesignView(self, view_list, dataPin, dataStates, dataFlow))
+    designView_tab.grid(row=0, column=0, sticky=W + E)
+    self.view_list.append(designView_tab)
+
     # Bottom frame label
-    lStatus = Label(self.bottom_frame, text="Not saved", bg="gray")
-    lStatus.grid(row=0, column=0, sticky=E+W)
+    lStatus = Label(bottomleft_frame, text="Not saved", bg="gray")
+    lStatus.grid(row=0, column=0, sticky=E + W)
     view_list.append(lStatus)
 
     # Create left frame
