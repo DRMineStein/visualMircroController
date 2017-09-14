@@ -26,6 +26,7 @@ class AppUI(Frame):
         self.dataStates = {}
         self.dataFlow = {}
         self.view_list = []
+        # self.view = ""
 
         Frame.__init__(self, master, relief=SUNKEN, bd=2)
 

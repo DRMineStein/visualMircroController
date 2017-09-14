@@ -114,6 +114,7 @@ def removeState(self, title, frameMaster, view_list, dataPin, dataStates, dataFl
                      rmState(s, t, ein, l, fm, v, dP, dS, dF))
     button1.grid(row=1, column=1)
 
+
 def saveState(self, e0, e1, e2, c, l, fm, v, dP, dS, dF):
     save = True
     inc = e1.get()
@@ -209,7 +210,7 @@ def saveState(self, e0, e1, e2, c, l, fm, v, dP, dS, dF):
         e0.delete(0, END)
         e1.delete(0, END)
         e2.delete(0, END)
-        ViewsMenuFunction.gotoStateView(fm, v, dP, dS, dF)
+        ViewsMenuFunction.updateCurrentView(fm, v, dP, dS, dF)
     print dS
     print "DF="
     print dF
@@ -265,7 +266,7 @@ def setState(self, t, e1, e2, c, l, fm, v, dP, dS, dF):
         l.txtvar.set("State has been created correctly.")
         e1.delete(0, END)
         e2.delete(0, END)
-        ViewsMenuFunction.gotoStateView(fm, v, dP, dS, dF)
+        ViewsMenuFunction.updateCurrentView(fm, v, dP, dS, dF)
     # print dS
 
 def rmState(s, t, ein, l, fm, view_list, dP, dS, dF):
@@ -294,7 +295,7 @@ def rmState(s, t, ein, l, fm, view_list, dP, dS, dF):
             dS[key] = (inc, outc)
 
     if removed:
-        ViewsMenuFunction.gotoStateView(fm, view_list, dP, dS, dF)
+        ViewsMenuFunction.updateCurrentView(fm, view_list, dP, dS, dF)
     print dS
 
 def generateGraph(self, figFrame, w, h, dataPin, dataStates, dataFlow):

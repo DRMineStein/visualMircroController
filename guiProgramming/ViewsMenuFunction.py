@@ -14,7 +14,7 @@ pins = []
 analogs = ["A0", "A1", "A2", "A3", "A4", "A5"]
 digitals = ["D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "D12", "D13"]
 
-
+view = ""
 # def selectBoard(board, self, view_list):
 #     global boardSelected
 #     global pins
@@ -32,9 +32,11 @@ digitals = ["D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "
 def gotoBoardView(self, view_list, dataPin, dataStates, dataFlow):
     global boards
     global pins
+    global view
     # dataPin = {}
     while len(view_list) != 0:
         view_list.pop().destroy()
+    view = "boardView"
 
     # Top frame label
     lViewName = Label(self.top_frame, text="Board view", bg="light green")
@@ -176,8 +178,10 @@ def describeVar(key, dP):
 
 def gotoStateView(self, view_list, dataPin, dataStates, dataFlow):
     global stateOptions
+    global view
     while len(view_list) != 0:
         view_list.pop().destroy()
+    view = "stateView"
 
     # Top frame label
     lViewName = Label(self.top_frame, text="State transition view", bg="light blue")
@@ -295,8 +299,10 @@ def gotoStateView(self, view_list, dataPin, dataStates, dataFlow):
 
 
 def gotoDesignView(self, view_list, dataPin, dataStates, dataFlow):
+    global view
     while len(view_list) != 0:
         view_list.pop().destroy()
+    view = "designView"
 
     # Top frame label
     lViewName = Label(self.top_frame, text="Design view", bg="salmon")
@@ -392,3 +398,14 @@ def gotoDesignView(self, view_list, dataPin, dataStates, dataFlow):
                                                       1 * self.master.winfo_screenwidth() / 4 - 25,
                                                       2 * self.master.winfo_screenheight() / 3 + 60, view_list, dataPin, dataStates, dataFlow, 'pin')
     view_list = view_list + rightBottom_frame_scrollbar
+
+def updateCurrentView(self, view_list, dataPin, dataStates, dataFlow):
+    global view
+
+    if view == "boardView":
+        gotoBoardView(self, view_list, dataPin, dataStates, dataFlow)
+    elif view == "stateView":
+        gotoStateView(self, view_list, dataPin, dataStates, dataFlow)
+    elif view == "designView":
+        gotoDesignView(self, view_list, dataPin, dataStates, dataFlow)
+

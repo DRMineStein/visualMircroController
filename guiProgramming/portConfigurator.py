@@ -111,7 +111,7 @@ def savePort(self, title, e1, e2, options, l, fm, v, dP, dS, dF):
         dP[title] = (e1.get(), e2.get(), options.get())
         self.top.destroy()
         try:
-            ViewsMenuFunction.gotoBoardView(self, v, dP, dS, dF)
+            ViewsMenuFunction.updateCurrentView(self, v, dP, dS, dF)
         except AttributeError:
             pass
     
