@@ -1,4 +1,5 @@
 from Tkinter import *
+import portConfigurator as pc
 
 def digitalWrite(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     self.top = Toplevel()
@@ -14,11 +15,30 @@ def digitalWrite(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     label2 = Label(self.top, text="Variable name:", bg="gray")
     label2.grid(row=2, column=0, sticky=W)
 
-    e1 = Entry(self.top, highlightbackground="gray")
-    e2 = Entry(self.top, highlightbackground="gray")
+    state = StringVar(self.top)
+    stateStr = "State"
+    try:
+        state.set(list(dataStates.keys())[0])
+        o1 = OptionMenu(self.top, state, *list(dataStates.keys()))
+    except IndexError:
+        o1 = OptionMenu(self.top, stateStr, "", "")
 
-    e1.grid(row=1, column=1)
-    e2.grid(row=2, column=1)
+    pin = StringVar(self.top)
+    pinStr = "Variable"
+    variables = []
+    for d in list(dataPin.keys()):
+        variables.append(dataPin[d][0])
+    try:
+        pin.set(variables[0])
+        o2 = OptionMenu(self.top, pin, *variables)
+    except IndexError:
+        o2 = OptionMenu(self.top, pinStr, "", "")
+
+    o1.config(highlightbackground='gray', bg='gray')
+    o2.config(highlightbackground='gray', bg='gray')
+
+    o1.grid(row=1, column=1)
+    o2.grid(row=2, column=1)
 
     var = IntVar()
     c = Checkbutton(self.top, text="HIGH if enabled, LOW otherwise", variable=var, bg="gray")
@@ -31,7 +51,7 @@ def digitalWrite(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     statusLabel.grid(row=3, sticky=W)
 
     button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Save operation",
-                     command=lambda t=title, state=e1, var=e2, check=c, l=statusLabel, fm=frameMaster,
+                     command=lambda t=title, state=state, var=pin, check=c, l=statusLabel, fm=frameMaster,
                                     dP=dataPin, dS=dataStates, dF=dataFlow:
                      addDigitalWrite(t, state, var, check, l, fm, dP, dS, dF))
     button1.grid(row=2, column=3)
@@ -72,32 +92,92 @@ def digitalRead(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     label3 = Label(self.top, text="Variable name to store:", bg="gray")
     label3.grid(row=3, column=0, sticky=W)
 
-    e1 = Entry(self.top, highlightbackground="gray")
-    e2 = Entry(self.top, highlightbackground="gray")
-    e3 = Entry(self.top, highlightbackground="gray")
+    state = StringVar(self.top)
+    stateStr = "State"
+    try:
+        state.set(list(dataStates.keys())[0])
+        o1 = OptionMenu(self.top, state, *list(dataStates.keys()))
+    except IndexError:
+        o1 = OptionMenu(self.top, stateStr, "", "")
 
-    e1.grid(row=1, column=1)
-    e2.grid(row=2, column=1)
-    e3.grid(row=3, column=1)
+    pin = StringVar(self.top)
+    pinStr = "Variable"
+    variables = []
+    for d in list(dataPin.keys()):
+        variables.append(dataPin[d][0])
+    try:
+        pin.set(variables[0])
+        o2 = OptionMenu(self.top, pin, *variables)
+    except IndexError:
+        o2 = OptionMenu(self.top, pinStr, "", "")
+
+    o1.config(highlightbackground='gray', bg='gray')
+    o2.config(highlightbackground='gray', bg='gray')
+
+    o1.grid(row=1, column=1)
+    o2.grid(row=2, column=1)
+
+    var2store = StringVar(self.top)
+    var2storeStr = "Variable"
+    variables2 = []
+    for d in list(dataPin.keys()):
+        variables2.append(dataPin[d][0])
+    variables2.append("Add new Variable")
+    try:
+        pin.set(variables[0])
+        o3 = OptionMenu(self.top, var2store, *variables2)
+    except IndexError:
+        o3 = OptionMenu(self.top, var2storeStr, "", "")
+
+    o3.config(highlightbackground="gray", bg='gray', width=10)
+
+    o3.grid(row=3, column=1)
 
     status = StringVar()
     statusLabel = Label(self.top, textvariable=status, bg="gray")
     statusLabel.txtvar = status
     statusLabel.grid(row=4, sticky=W)
 
-    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Save pin",
-                     command=lambda t=title, state=e1, var=e2, var2store=e3, l=statusLabel, fm=frameMaster,
+    button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Save Operation",
+                     command=lambda t=title, state=state, var=pin, var2store=var2store, l=statusLabel, fm=frameMaster,
                                     dP=dataPin, dS=dataStates, dF=dataFlow:
-                     addDigitalRead(t, state, var, var2store, l, fm, dP, dS, dF))
+                     addDigitalRead(self, t, state, var, var2store, l, fm, dP, dS, dF))
     button1.grid(row=3, column=3)
 
 
-def addDigitalRead(title, state, variable, var2store, status_label, frameMaster, dataPin, dataStates, dataFlow):
+def addDigitalRead(self, title, state, variable, var2store, status_label, frameMaster, dataPin, dataStates, dataFlow):
     if state.get() in dataStates:
         if variable.get() in map(lambda a: a[0], dataPin.values()):
-            code =  "digitalRead(" + variable.get() + ");\n"
-            dataFlow[state.get()].append((code, state.get()+"_"+title.replace(' ',"")))
-            status_label.txtvar.set(title + " operation added.")
+            if var2store.get() is not " ":
+                self.top.destroy()
+
+                name = var2store.get()
+
+                if name == "Add new Variable":
+                    # self.top = Toplevel()
+                    # self.top.title(title)
+                    # self.top.config(bg="gray")
+                    #
+                    # label1 = Label(self.top, text="Variable name:", bg="gray")
+                    #
+                    # e1 = Entry(self.top, highlightbackground='gray', bg='gray')
+                    #
+                    # label1.grid(row=1, column=1, sticky=W)
+                    #
+                    # e1.grid(row=1, column=2, sticky=E)
+                    #
+                    # button1 = Button(self.top, height=1, width=15, relief=FLAT, bg='gray', fg='gray', highlightbackground='gray', text="Save Variable",
+                    #                  command=)
+                    name = "V" + str(len(dataPin))
+                    pc.setPort(self, name, [], frameMaster, dataPin, dataStates, dataFlow)
+
+                    name = "##" + name + "__"
+                print name
+                code = name + " = digitalRead(" + variable.get() + ");\n"
+                dataFlow[state.get()].append((code, state.get()+"_"+title.replace(' ',"")))
+                status_label.txtvar.set(title + " operation added.")
+            else:
+                status_label.txtvar.set("Variable name for storing not found.")
         else:
             status_label.txtvar.set("Variable name not found.")
     else:
@@ -120,12 +200,33 @@ def analogWrite(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     label3 = Label(self.top, text="Value:", bg="gray")
     label3.grid(row=3, column=0, sticky=W)
 
-    e1 = Entry(self.top, highlightbackground="gray")
-    e2 = Entry(self.top, highlightbackground="gray")
+    state = StringVar(self.top)
+    stateStr = "State"
+    try:
+        state.set(list(dataStates.keys())[0])
+        o1 = OptionMenu(self.top, state, *list(dataStates.keys()))
+    except IndexError:
+        o1 = OptionMenu(self.top, stateStr, "", "")
+
+    pin = StringVar(self.top)
+    pinStr = "Variable"
+    variables = []
+    for d in list(dataPin.keys()):
+        variables.append(dataPin[d][0])
+    try:
+        pin.set(variables[0])
+        o2 = OptionMenu(self.top, pin, *variables)
+    except IndexError:
+        o2 = OptionMenu(self.top, pinStr, "", "")
+
+    o1.config(highlightbackground='gray', bg='gray')
+    o2.config(highlightbackground='gray', bg='gray')
+
+    o1.grid(row=1, column=1)
+    o2.grid(row=2, column=1)
+
     e3 = Entry(self.top, highlightbackground="gray")
 
-    e1.grid(row=1, column=1)
-    e2.grid(row=2, column=1)
     e3.grid(row=3, column=1)
 
     status = StringVar()
@@ -134,7 +235,7 @@ def analogWrite(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     statusLabel.grid(row=4, sticky=W)
 
     button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Save operation",
-                     command=lambda t=title, state=e1, var=e2, val=e3, l=statusLabel, fm=frameMaster,
+                     command=lambda t=title, state=state, var=pin, val=e3, l=statusLabel, fm=frameMaster,
                                     dP=dataPin, dS=dataStates, dF=dataFlow:
                      addAnalogWrite(t, state, var, val, l, fm, dP, dS, dF))
     button1.grid(row=3, column=3)
@@ -326,10 +427,21 @@ def wait(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     label2 = Label(self.top, text="Timeout:", bg="gray")
     label2.grid(row=2, column=0, sticky=W)
 
-    e1 = Entry(self.top, highlightbackground="gray")
+    state = StringVar(self.top)
+    stateStr = "State"
+    try:
+        state.set(list(dataStates.keys())[0])
+        o1 = OptionMenu(self.top, state, *list(dataStates.keys()))
+    except IndexError:
+        o1 = OptionMenu(self.top, stateStr, "", "")
+
+
+    o1.config(highlightbackground='gray', bg='gray')
+
+    o1.grid(row=1, column=1)
+
     e2 = Entry(self.top, highlightbackground="gray")
 
-    e1.grid(row=1, column=1)
     e2.grid(row=2, column=1)
 
     status = StringVar()
@@ -338,7 +450,7 @@ def wait(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     statusLabel.grid(row=3, sticky=W)
 
     button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Save operation",
-                     command=lambda t=title, state=e1, timeout=e2, l=statusLabel, fm=frameMaster,
+                     command=lambda t=title, state=state, timeout=e2, l=statusLabel, fm=frameMaster,
                                     dP=dataPin, dS=dataStates, dF=dataFlow:
                      addWait(t, state, timeout, l, fm, dP, dS, dF))
     button1.grid(row=2, column=3)
@@ -375,13 +487,34 @@ def tone(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     label4 = Label(self.top, text='Duration:', bg='gray')
     label4.grid(row=4, column=0, sticky=W)
 
-    e1 = Entry(self.top, highlightbackground="gray")
-    e2 = Entry(self.top, highlightbackground="gray")
+    state = StringVar(self.top)
+    stateStr = "State"
+    try:
+        state.set(list(dataStates.keys())[0])
+        o1 = OptionMenu(self.top, state, *list(dataStates.keys()))
+    except IndexError:
+        o1 = OptionMenu(self.top, stateStr, "", "")
+
+    pin = StringVar(self.top)
+    pinStr = "Variable"
+    variables = []
+    for d in list(dataPin.keys()):
+        variables.append(dataPin[d][0])
+    try:
+        pin.set(variables[0])
+        o2 = OptionMenu(self.top, pin, *variables)
+    except IndexError:
+        o2 = OptionMenu(self.top, pinStr, "", "")
+
+    o1.config(highlightbackground='gray', bg='gray')
+    o2.config(highlightbackground='gray', bg='gray')
+
+    o1.grid(row=1, column=1)
+    o2.grid(row=2, column=1)
+
     e3 = Entry(self.top, highlightbackground="gray")
     e4 = Entry(self.top, highlightbackground="gray")
 
-    e1.grid(row=1, column=1)
-    e2.grid(row=2, column=1)
     e3.grid(row=3, column=1)
     e4.grid(row=4, column=1)
 
@@ -391,7 +524,7 @@ def tone(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     statusLabel.grid(row=5, sticky=W)
 
     button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Save operation",
-                     command=lambda t=title, state=e1, var=e2, frq=e3, dur=e4, l=statusLabel, fm=frameMaster,
+                     command=lambda t=title, state=state, var=pin, frq=e3, dur=e4, l=statusLabel, fm=frameMaster,
                                     dP=dataPin, dS=dataStates, dF=dataFlow:
                      addTone(t, state, var, frq, dur, l, fm, dP, dS, dF))
     button1.grid(row=4, column=3)

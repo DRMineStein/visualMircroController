@@ -69,7 +69,7 @@ def genLoop(dataPin, dataStates, dataFlow):
     for s in list(dataStates.keys()):
         code += "\t"*indent +"case "+s+":\n"
         indent += 1
-        code += genStateBlock(indent, s, dataPin, dataStates, dataFlow)
+        code += genStateBlock(indent, s, dataPin, dataStates, dataFlow).replace("\n", "\n" + indent*"\t")
 
         if len(dataStates[s][1])==1:
             code += "\t"*indent + "s = "+ dataStates[s][1].pop() + ";\n"
@@ -93,6 +93,18 @@ def genStateBlock(indent, state, dataPin, dataStates, dataFlow):
     code = ""
 
     for key in dataFlow[state]:
-        code += "\t"*indent + key[0] + "\n"
+        line = key[0]
+
+        i = line.index("##")
+
+        if i > -1:
+            j = line.index("__")
+
+            if j > -1:
+                shadow = line[i+2:j]
+                if shadow in dataPin.keys():
+                    code += "\t" * indent + line.replace(line[i:j+2], dataPin[shadow][0]) + "\n"
+        else:
+            code += "\t"*indent + line + "\n"
 
     return code
