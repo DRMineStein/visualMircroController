@@ -74,7 +74,7 @@ def gotoBoardView(self, view_list, dataPin, dataStates, dataFlow):
     self.view_list.append(stateView_tab)
 
     # boardViewTab
-    designView_tab = Button(bottomright_frame, text="Desgin Flow",
+    designView_tab = Button(bottomright_frame, text="Design Flow",
                            width=bottomright_frame.winfo_screenwidth()/30, highlightbackground='salmon',
                            bg='salmon',
                            command=lambda: gotoDesignView(self, view_list, dataPin, dataStates, dataFlow))
@@ -218,7 +218,7 @@ def gotoStateView(self, view_list, dataPin, dataStates, dataFlow):
     self.view_list.append(stateView_tab)
 
     # boardViewTab
-    designView_tab = Button(bottomright_frame, text="Desgin Flow",
+    designView_tab = Button(bottomright_frame, text="Design Flow",
                             width=bottomright_frame.winfo_screenwidth() / 30, highlightbackground='salmon',
                             bg='salmon',
                             command=lambda: gotoDesignView(self, view_list, dataPin, dataStates, dataFlow))
@@ -337,7 +337,7 @@ def gotoDesignView(self, view_list, dataPin, dataStates, dataFlow):
     self.view_list.append(stateView_tab)
 
     # boardViewTab
-    designView_tab = Button(bottomright_frame, text="Desgin Flow",
+    designView_tab = Button(bottomright_frame, text="Design Flow",
                             width=bottomright_frame.winfo_screenwidth() / 30, highlightbackground='salmon',
                             bg='salmon',
                             command=lambda: gotoDesignView(self, view_list, dataPin, dataStates, dataFlow))
