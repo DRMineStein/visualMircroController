@@ -51,12 +51,12 @@ def digitalWrite(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     statusLabel.grid(row=3, sticky=W)
 
     button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Save operation",
-                     command=lambda t=title, state=state, var=pin, check=c, l=statusLabel, fm=frameMaster,
+                     command=lambda s=self, t=title, state=state, var=pin, check=c, l=statusLabel, fm=frameMaster,
                                     dP=dataPin, dS=dataStates, dF=dataFlow:
-                     addDigitalWrite(t, state, var, check, l, fm, dP, dS, dF))
+                     addDigitalWrite(s, t, state, var, check, l, fm, dP, dS, dF))
     button1.grid(row=2, column=3)
 
-def addDigitalWrite(title, state, variable, check, status_label, frameMaster, dataPin, dataStates, dataFlow):
+def addDigitalWrite(self, title, state, variable, check, status_label, frameMaster, dataPin, dataStates, dataFlow):
     if state.get() in dataStates:
         if variable.get() in map(lambda a: a[0], dataPin.values()):
             logicalState = None
@@ -67,8 +67,9 @@ def addDigitalWrite(title, state, variable, check, status_label, frameMaster, da
                 logicalState = "LOW"
             
             code = "digitalWrite(" + variable.get() + "," + logicalState + ");\n"
-            dataFlow[state.get()].append((code, state.get()+"_"+title.replace(' ',"")))
+            updateCode(state, code, title, dataFlow)
             status_label.txtvar.set(title + " operation added.")
+            self.top.destroy()
         else:
             status_label.txtvar.set("Variable name not found.")
     else:
@@ -139,9 +140,9 @@ def digitalRead(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     statusLabel.grid(row=4, sticky=W)
 
     button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Save Operation",
-                     command=lambda t=title, state=state, var=pin, var2store=var2store, l=statusLabel, fm=frameMaster,
+                     command=lambda s=self, t=title, state=state, var=pin, var2store=var2store, l=statusLabel, fm=frameMaster,
                                     dP=dataPin, dS=dataStates, dF=dataFlow:
-                     addDigitalRead(self, t, state, var, var2store, l, fm, dP, dS, dF))
+                     addDigitalRead(s, t, state, var, var2store, l, fm, dP, dS, dF))
     button1.grid(row=3, column=3)
 
 
@@ -154,28 +155,15 @@ def addDigitalRead(self, title, state, variable, var2store, status_label, frameM
                 name = var2store.get()
 
                 if name == "Add new Variable":
-                    # self.top = Toplevel()
-                    # self.top.title(title)
-                    # self.top.config(bg="gray")
-                    #
-                    # label1 = Label(self.top, text="Variable name:", bg="gray")
-                    #
-                    # e1 = Entry(self.top, highlightbackground='gray', bg='gray')
-                    #
-                    # label1.grid(row=1, column=1, sticky=W)
-                    #
-                    # e1.grid(row=1, column=2, sticky=E)
-                    #
-                    # button1 = Button(self.top, height=1, width=15, relief=FLAT, bg='gray', fg='gray', highlightbackground='gray', text="Save Variable",
-                    #                  command=)
                     name = "V" + str(len(dataPin))
                     pc.setPort(self, name, [], frameMaster, dataPin, dataStates, dataFlow)
 
-                    name = "##" + name + "__"
+                    name = "##" + name + "##"
                 print name
                 code = name + " = digitalRead(" + variable.get() + ");\n"
-                dataFlow[state.get()].append((code, state.get()+"_"+title.replace(' ',"")))
+                updateCode(state, code, title, dataFlow)
                 status_label.txtvar.set(title + " operation added.")
+                self.top.destroy()
             else:
                 status_label.txtvar.set("Variable name for storing not found.")
         else:
@@ -235,28 +223,28 @@ def analogWrite(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     statusLabel.grid(row=4, sticky=W)
 
     button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Save operation",
-                     command=lambda t=title, state=state, var=pin, val=e3, l=statusLabel, fm=frameMaster,
+                     command=lambda s=self, t=title, state=state, var=pin, val=e3, l=statusLabel, fm=frameMaster,
                                     dP=dataPin, dS=dataStates, dF=dataFlow:
-                     addAnalogWrite(t, state, var, val, l, fm, dP, dS, dF))
+                     addAnalogWrite(s, t, state, var, val, l, fm, dP, dS, dF))
     button1.grid(row=3, column=3)
 
 
-def addAnalogWrite(title, state, variable, val, status_label, frameMaster, dataPin, dataStates, dataFlow):
+def addAnalogWrite(self, title, state, variable, val, status_label, frameMaster, dataPin, dataStates, dataFlow):
     if state.get() in dataStates:
         print dataPin
         if variable.get() in map(lambda a: a[0], dataPin.values()):
             try:
                 value = int(val.get())
                 code =  "analogWrite(" + variable.get() + ", " + str(value) + ");\n"
-                dataFlow[state.get()].append((code, state.get()+"_"+title.replace(' ',"")))
+                updateCode(state, code, title, dataFlow)
                 status_label.txtvar.set(title + " operation added.")
+                self.top.destroy()
             except ValueError:
                 status_label.txtvar.set("Invalid value format.")
         else:
             status_label.txtvar.set("Variable name not found.")
     else:
         status_label.txtvar.set("State not found.")
-
 
 def ifElse(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     self.top = Toplevel()
@@ -280,134 +268,124 @@ def ifElse(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
                              width=self.top.winfo_screenwidth() / 2, highlightbackground='gray')
     self.bottomFrame.grid(row=3, column=0, sticky=E + W)
 
-    descriptionLabel = Label(self.topFrame, text="Set options for the selected operation", bg="gray")
-    descriptionLabel.grid(row=0, sticky=W)
+    label1 = Label(self.topFrame, text="State:", bg="gray")
+    label1.grid(row=0, column=1, sticky=W + E)
 
-    label1 = Label(self.topFrame, text="State", bg="gray")
-    label1.grid(row=2, column=0, sticky=W)
+    label2 = Label(self.topFrame, text="Condition:", bg="gray", pady=20)
+    label2.grid(row=1, column=0, sticky=W + E)
 
-    label2 = Label(self.topFrame, text="Condition", bg="gray", pady=20)
-    label2.grid(row=3, column=0, sticky=W)
+    label3 = Label(self.centerFrame, text="Execution:", bg="gray")
+    label3.grid(row=0, column=0, sticky=W + E)
 
-    label3 = Label(self.centerFrame, text="IF", bg="gray")
-    label3.grid(row=1, column=0, sticky=W + E)
+    label4 = Label(self.centerFrame, text="Do", bg="gray")
+    label4.grid(row=0, column=1, sticky=W + E)
 
-    label4 = Label(self.centerFrame, text="ELSE", bg="gray")
-    label4.grid(row=1, column=1, sticky=E + W)
+    label5 = Label(self.centerFrame, text="Otherwise do", bg="gray")
+    label5.grid(row=0, column=2, sticky=W + E)
 
+    # Safe Arrays
+    states = dataStates.keys()
+    if len(states) == 0:
+        states.append("")
+
+    variables = []
+    for k,v in dataPin.iteritems():
+        if k[0] == "V":
+            variables.append(v[0])
+    if len(variables) == 0:
+        variables.append("                   ")
+    variables.append("Add new variable")
+
+    functions = list(opList)
+    functions.append("Pass")
+
+    # Add components
     state = StringVar(self.top)
-    stateStr = "State"
-    try:
-        state.set(list(dataStates.keys())[0])
-        o1 = OptionMenu(self.topFrame, state, *list(dataStates.keys()))
-    except IndexError:
-        o1 = OptionMenu(self.topFrame, stateStr, "", "")
-
-
-    # o1 = apply(OptionMenu, (self.topFrame, state) + tuple(list(dataStates.keys())))
-    o1.config(bg="gray", highlightbackground="gray")
+    state.set(states[0])
+    stateMenu = OptionMenu(self.topFrame, state, *states)
+    stateMenu.config(bg="gray", highlightbackground="gray")
     # Condition Dropdownmenus
-    var = StringVar(self.top)
-    var.set("a")
-    o2 = OptionMenu(self.topFrame, var, "a", "b")
-    o2.config(highlightbackground="gray", bg="gray")
+    var1 = StringVar(self.top)
+    var1.set(variables[0])
+    var1Menu = OptionMenu(self.topFrame, var1, *variables)
+    var1Menu.config(highlightbackground="gray", bg="gray")
 
-    OPERATOR=["equal", "different", "greater then", "greater equal then", "less then", "less equal then"]
+    operators = ["equals", "is different from", "is greater than", "is greater than or equals", "is less than", "is less than or equals"]
     op = StringVar(self.top)
-    op.set(OPERATOR[0])
+    op.set(operators[0])
+    opMenu = OptionMenu(self.topFrame, op, *operators)
+    opMenu.config(highlightbackground="gray", bg="gray")
 
-    o3 = OptionMenu(self.topFrame, op, *OPERATOR)
-    o3.config(highlightbackground="gray", bg="gray")
-
-    e1 = Entry(self.topFrame, highlightbackground="gray")
-
+    var2 = StringVar(self.top)
+    var2.set(variables[0])
+    var2Menu = OptionMenu(self.topFrame, var2, *variables)
+    var2Menu.config(highlightbackground="gray", bg="gray")
     # for item in
 
     # code inside if condition
     # if
     opr = StringVar(self.top)
-    oprStateStr = "State"
-    try:
-        opr.set(list(dataStates.keys())[0])
-        o4 = OptionMenu(self.centerFrame, opr, *list(dataStates.keys()))
-    except IndexError:
-        o4 = OptionMenu(self.centerFrame, oprStateStr, "", "")
-
-    # opr.set(list(dataStates.keys())[0])
-
-    # o4 = OptionMenu(self.centerFrame, opr, *list(dataStates.keys()))
-    o4.config(highlightbackground="gray", bg="gray")
+    opr.set(functions[0])
+    oprMenu = OptionMenu(self.centerFrame, opr, *functions)
+    oprMenu.config(bg="gray", highlightbackground="gray")
 
     # else
     opre = StringVar(self.top)
-    opreList = []
-    opreList.append("Pass")
-    for item in list(dataStates.keys()):
-        opreList.append(item)
-
-    opreStateStr = "State"
-    try:
-        opre.set(opreList[0])
-        o5 = OptionMenu(self.centerFrame, opre, *opreList)
-    except IndexError:
-        o5 = OptionMenu(self.centerFrame, opreStateStr, "", "")
+    opre.set(functions[0])
+    opreMenu = OptionMenu(self.centerFrame, opre, *functions)
+    opreMenu.config(bg="gray", highlightbackground="gray")
 
 
-    # o5 = OptionMenu(self.centerFrame, opre, *list(dataStates.keys()))
-    o5.config(highlightbackground="gray", bg="gray")
+    stateMenu.grid(row=0, column=2, sticky=E+W)
+    var1Menu.grid(row=1, column=1, sticky=E+W)
+    opMenu.grid(row=1, column=2, sticky=E+W)
+    var2Menu.grid(row=1, column=3, sticky=E+W)
+    oprMenu.grid(row=1, column=1, sticky=E+W)
+    opreMenu.grid(row=1, column=2, sticky=E+W)
 
-    o1.grid(row=2, column=1)
-    o2.grid(row=3, column=1)
-    o3.grid(row=3, column=2)
-    e1.grid(row=3, column=3)
-    o4.grid(row=2, column=0)
-    o5.grid(row=2, column=1)
-
-    if op.get() == "equal":
-        oP = "=="
-    elif op.get() == "different":
-        oP = "!="
-    elif op.get() == "greater then":
-        oP = ">"
-    elif op.get() == "greater equal then":
-        oP = ">="
-    elif op.get() == "less then":
-        oP = "<"
-    elif op.get() == "less equal then":
-        oP = "<="
-
+    if op.get() == "equals":
+        oP = " == "
+    elif op.get() == "is different from":
+        oP = " != "
+    elif op.get() == "is greater than":
+        oP = " > "
+    elif op.get() == "is greater than or equals":
+        oP = " >= "
+    elif op.get() == "is less than":
+        oP = " < "
+    elif op.get() == "is less than or equals":
+        oP = " <= "
 
     status = StringVar()
     statusLabel = Label(self.bottomFrame, textvariable=status, bg="gray")
-    statusLabel.txtvar = ""
     statusLabel.txtvar = status
     statusLabel.grid(row=1, column=1, sticky=W)
 
     button1 = Button(self.centerFrame, height=1, width=15, relief=FLAT, bg="gray", fg="gray",
                      highlightbackground="gray", text="Save condition",
-                     command=lambda t=title, state=state, var=var, operator=oP, operation=opr, operationElse=opre, val=e1, l=statusLabel, fm=frameMaster,
+                     command=lambda t=title, state=state, var1=var1, operator=oP, var2=var2, operation=opr, operationElse=opre, l=statusLabel, fm=frameMaster,
                                     dP=dataPin, dS=dataStates, dF=dataFlow:
-                     addifElse(self, t, state, var, operator, val, opr, opre, l, fm, dP, dS, dF))
-    button1.grid(row=2, column=2, sticky=E)
+                     addifElse(self, t, state, var1, operator, var2, opr, opre, l, fm, dP, dS, dF))
+    button1.grid(row=2, column=2, sticky=W+E)
 
 
-def addifElse(self,title, state, variable, operator, val, opr, opre, status_label, frameMaster, dataPin, dataStates, dataFlow):
-    print(type(val.get()))
-    if state.get() in dataStates:
-        if opr.get() in dataStates:
-            if opre.get() in dataStates or opre.get() is "Pass":
+def addifElse(self,title, state, var1, operator, var2, opr, opre, status_label, frameMaster, dataPin, dataStates, dataFlow):
+    if state.get() in dataStates.keys():
+        if opr.get() in opList or opre.get() == "Pass":
+            if opre.get() in opList or opre.get() == "Pass":
                 # value = int(val.get())
-                code = "if(" + variable.get() + operator + val.get() + ") {\n" + "\ts = " + opr.get() + "\n}"
-                if opre.get() is "Pass":
-                    code += "else {\n\ts = " + opre.get() + "\n}"
-                dataFlow[state.get()].append((code, state.get() + "_" + title.replace(' ', "")))
-                print code
-                status_label.txtvar.set(title + " operation added.")
+                code = "if(" + var1.get() + operator + var2.get() + ") {\n\t__flag__\n} else {\n\t__flag__\n}"
+                
+                updateCode(state, code, title, dataFlow)
+                self.top.destroy()
+
+                opFunc[opr.get()](self, "If block - " + opr.get(), frameMaster, [], dataPin, dataStates, dataFlow)
+                opFunc[opre.get()](self, "Else block - " + opre.get(), frameMaster, [], dataPin, dataStates, dataFlow)
             else:
-                status_label.txtvar.set("ELSE State not found.")
+                status_label.txtvar.set("False-case operator not found.")
                 print opre.get()
         else:
-            status_label.txtvar.set("IF State not found.")
+            status_label.txtvar.set("True-case operator not found.")
     else:
         status_label.txtvar.set("State not found.")
     # status_label.txtvar.set("Hallo")
@@ -450,18 +428,19 @@ def wait(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     statusLabel.grid(row=3, sticky=W)
 
     button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Save operation",
-                     command=lambda t=title, state=state, timeout=e2, l=statusLabel, fm=frameMaster,
+                     command=lambda s=self, t=title, state=state, timeout=e2, l=statusLabel, fm=frameMaster,
                                     dP=dataPin, dS=dataStates, dF=dataFlow:
-                     addWait(t, state, timeout, l, fm, dP, dS, dF))
+                     addWait(s, t, state, timeout, l, fm, dP, dS, dF))
     button1.grid(row=2, column=3)
 
-def addWait(title, state, timeout, status_label, frameMaster, dataPin, dataStates, dataFlow):
+def addWait(self, title, state, timeout, status_label, frameMaster, dataPin, dataStates, dataFlow):
     if state.get() in dataStates:
         try:
             delay = int(timeout.get())    
             code =  "delay(" + str(delay) + ");\n"
-            dataFlow[state.get()].append((code, state.get()+"_"+title.replace(' ',"")))
+            updateCode(state, code, title, dataFlow)
             status_label.txtvar.set(title + " operation added.")
+            self.top.destroy()
         except ValueError:
             status_label.txtvar.set("Invalid delay format.")
     else:
@@ -524,9 +503,9 @@ def tone(self, title, frameMaster, v, dataPin, dataStates, dataFlow):
     statusLabel.grid(row=5, sticky=W)
 
     button1 = Button(self.top, height=1, width=15, relief=FLAT, bg="gray", fg="gray", highlightbackground="gray", text="Save operation",
-                     command=lambda t=title, state=state, var=pin, frq=e3, dur=e4, l=statusLabel, fm=frameMaster,
+                     command=lambda s=self, t=title, state=state, var=pin, frq=e3, dur=e4, l=statusLabel, fm=frameMaster,
                                     dP=dataPin, dS=dataStates, dF=dataFlow:
-                     addTone(t, state, var, frq, dur, l, fm, dP, dS, dF))
+                     addTone(s, t, state, var, frq, dur, l, fm, dP, dS, dF))
     button1.grid(row=4, column=3)
 
 def addTone(title, state, variable, frq, dur, status_label, frameMaster, dataPin, dataStates, dataFlow):
@@ -536,14 +515,24 @@ def addTone(title, state, variable, frq, dur, status_label, frameMaster, dataPin
                 frequency = int(frq.get())
                 duration = int(dur.get())
                 code = "tone(" + variable.get() + ", " + str(frequency) + ", " + str(duration) + ");\n"
-                dataFlow[state.get()].append((code, state.get()+"_"+title.replace(' ',"")))
+                updateCode(state, code, title, dataFlow)
                 status_label.txtvar.set(title + " operation added.")
+                self.top.destroy()
             except ValueError:
                 status_label.txtvar.set("Invalid value format.")
         else:
             status_label.txtvar.set("Variable name not found.")
     else:
         status_label.txtvar.set("State not found.")
+
+def updateCode(state, code, title, dataFlow):
+    if len(dataFlow[state.get()]) > 0 and "__flag__" in dataFlow[state.get()][-1][0]:
+        last = dataFlow[state.get()][-1]
+        tup = (last[0].replace("__flag__", code, 1), last[1])
+        dataFlow[state.get()][-1] = tup
+    else:
+        print dataFlow[state.get()]
+        dataFlow[state.get()].append((code, state.get()+"_"+title.replace(' ',"").replace('-', '')))
 
 opList = ["Digital write", "Analog write", "Digital read", "Wait", "Tone", "Condition"]
 

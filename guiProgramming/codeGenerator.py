@@ -93,18 +93,16 @@ def genStateBlock(indent, state, dataPin, dataStates, dataFlow):
     code = ""
 
     for key in dataFlow[state]:
-        line = key[0]
+        line = key[0].replace("\n", "\n\t" * indent)
 
-        i = line.index("##")
+        try:
+            i = line.index("##")
+            j = line.index(i + 2, "##")
 
-        if i > -1:
-            j = line.index("__")
-
-            if j > -1:
-                shadow = line[i+2:j]
-                if shadow in dataPin.keys():
-                    code += "\t" * indent + line.replace(line[i:j+2], dataPin[shadow][0]) + "\n"
-        else:
+            shadow = line[i+2:j]
+            if shadow in dataPin.keys():
+                code += "\t" * indent + line.replace(line[i:j+2], dataPin[shadow][0]) + "\n"
+        except ValueError:
             code += "\t"*indent + line + "\n"
 
     return code
